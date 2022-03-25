@@ -11,4 +11,5 @@ public interface BaseTaskService {
     Task getTask(Long taskId);
     List<Task> getTasks();
     public void addUserToTask(String  username, Long taskId);
+    public void deleteTask(Long id);
 }

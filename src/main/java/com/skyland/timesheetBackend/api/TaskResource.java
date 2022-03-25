@@ -27,4 +27,9 @@ public class TaskResource {
     public ResponseEntity<List<Task>> getAllTasks() {
         return ResponseEntity.ok(taskService.getTasks());
     }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteTask(@PathVariable("id") Long id) {
+        taskService.deleteTask(id);
+    }
 }

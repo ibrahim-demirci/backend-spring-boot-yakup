@@ -47,8 +47,10 @@ public class TaskService implements BaseTaskService {
         } else {
             throw new RuntimeException("task not found");
         }
-
-
     }
 
+    @Override
+    public void deleteTask(Long id) {
+        taskRepo.deleteById(id);
+    }
 }
