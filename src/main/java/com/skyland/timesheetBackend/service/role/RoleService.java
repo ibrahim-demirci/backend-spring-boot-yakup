@@ -7,10 +7,15 @@ import com.skyland.timesheetBackend.repo.RoleRepo;
 import com.skyland.timesheetBackend.repo.UserRepo;
 import com.skyland.timesheetBackend.service.role.BaseRoleService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
+@Transactional
 public class RoleService implements BaseRoleService {
 
 
@@ -24,6 +29,7 @@ public class RoleService implements BaseRoleService {
 
     @Override
     public void addRoleToUser(String username, String roleName) {
+        log.info("Adding role {} to user {} ", roleName,username);
         User user = userRepo.findByUsername(username);
         Role role = roleRepo.findByName(roleName);
         user.getRoles().add(role);

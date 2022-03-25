@@ -2,7 +2,7 @@ package com.skyland.timesheetBackend.api;
 
 
 import com.skyland.timesheetBackend.domain.User;
-import com.skyland.timesheetBackend.service.user.UserService;
+import com.skyland.timesheetBackend.service.user.BaseUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ import java.net.URI;
 @RestController @RequestMapping("/api") @RequiredArgsConstructor
 public class UserResource {
 
-    private final UserService userService;
+    private final BaseUserService userService;
 
     @GetMapping("/user/save")
     public ResponseEntity<User> saveUser(@RequestBody User user) {

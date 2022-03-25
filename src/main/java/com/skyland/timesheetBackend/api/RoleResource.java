@@ -1,7 +1,7 @@
 package com.skyland.timesheetBackend.api;
 
 import com.skyland.timesheetBackend.domain.Role;
-import com.skyland.timesheetBackend.service.role.RoleService;
+import com.skyland.timesheetBackend.service.role.BaseRoleService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import java.net.URI;
 @RequestMapping("/api") @RequiredArgsConstructor
 public class RoleResource {
 
-    private RoleService roleService;
+    private BaseRoleService roleService;
 
     @PostMapping("/role/save")
     public ResponseEntity<Role> saveRole(@RequestBody Role role) {
