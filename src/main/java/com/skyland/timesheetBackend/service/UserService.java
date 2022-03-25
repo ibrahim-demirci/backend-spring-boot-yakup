@@ -38,8 +38,4 @@ public class UserService implements BaseUserService  {
         return userRepo.findByUsername(username);
     }
 
-    @Override
-    public List<User> getUsers() {
-        return userRepo.findAll();
-    }
 }
