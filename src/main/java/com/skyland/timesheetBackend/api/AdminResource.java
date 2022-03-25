@@ -2,7 +2,7 @@ package com.skyland.timesheetBackend.api;
 
 
 import com.skyland.timesheetBackend.domain.User;
-import com.skyland.timesheetBackend.service.AdminService;
+import com.skyland.timesheetBackend.service.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
