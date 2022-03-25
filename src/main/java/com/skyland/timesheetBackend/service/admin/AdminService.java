@@ -20,8 +20,9 @@ public class AdminService implements BaseAdminService {
     }
 
     @Override
-    public void verifyUser(String username) {
-        User user = userRepo.findByUsername(username);
-        user.setVerified(true);
+    public User verifyUser(User user) {
+        User findedUser = userRepo.findByUsername(user.getUsername());
+        findedUser.setVerified(true);
+        return findedUser;
     }
 }

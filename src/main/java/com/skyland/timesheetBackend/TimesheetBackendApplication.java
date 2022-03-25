@@ -36,11 +36,10 @@ public class TimesheetBackendApplication {
 			userService.saveUser(new User("Jim","Carry", "555 555 55 55","description","jim", "1234", new ArrayList<>()));
 			userService.saveUser(new User("Arnold","Sch", "555 555 55 55","description","arnold", "1234", new ArrayList<>()));
 
-			roleService.addRoleToUser("john", "ROLE_USER");
-			roleService.addRoleToUser("will", "ROLE_USER");
+
 			roleService.addRoleToUser("jim", "ROLE_ADMIN");
 			roleService.addRoleToUser("arnold", "ROLE_ADMIN");
-			roleService.addRoleToUser("arnold", "ROLE_USER");
+
 		};
 	}
 }

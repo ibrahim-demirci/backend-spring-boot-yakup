@@ -7,5 +7,5 @@ import java.util.List;
 public interface BaseAdminService {
 
     public List<User> getUsers();
-    public void verifyUser(String username);
+    public User verifyUser(User user);
 }
