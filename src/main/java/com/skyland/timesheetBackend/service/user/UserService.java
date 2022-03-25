@@ -1,7 +1,10 @@
 package com.skyland.timesheetBackend.service.user;
 
+import com.skyland.timesheetBackend.domain.Role;
 import com.skyland.timesheetBackend.domain.User;
+import com.skyland.timesheetBackend.repo.RoleRepo;
 import com.skyland.timesheetBackend.repo.UserRepo;
+import com.skyland.timesheetBackend.service.role.RoleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,6 +22,7 @@ import java.util.Collection;
 public class UserService implements BaseUserService, UserDetailsService {
 
     private final UserRepo userRepo;
+    private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -41,7 +45,9 @@ public class UserService implements BaseUserService, UserDetailsService {
     @Override
     public User saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepo.save(user);
+        User userSaved = userRepo.save(user);
+        roleService.addRoleToUser(userSaved.getUsername(),"ROLE_USER");
+        return userSaved;
     }
 
     @Override
