@@ -8,5 +8,5 @@ import java.util.List;
 public interface BaseUserService {
     User saveUser(User user);
     User getUser(String username);
-
+    void deleteUser(Long id);
 }

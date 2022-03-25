@@ -10,6 +10,7 @@ import com.skyland.timesheetBackend.domain.Role;
 import com.skyland.timesheetBackend.domain.User;
 import com.skyland.timesheetBackend.service.user.BaseUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -79,6 +80,13 @@ public class UserResource {
             throw new RuntimeException("Refresh token is missing");
         }
     }
+
+    @DeleteMapping("/user/delete/{id}")
+    public ResponseEntity<?> deleteEmployee(@PathVariable("id") Long id) {
+        userService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
 
 }

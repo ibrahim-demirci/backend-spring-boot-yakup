@@ -55,5 +55,10 @@ public class UserService implements BaseUserService, UserDetailsService {
         return userRepo.findByUsername(username);
     }
 
+    @Override
+    public void deleteUser(Long id) {
+        userRepo.deleteById(id);
+    }
+
 
 }
