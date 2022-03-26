@@ -6,7 +6,7 @@ import com.skyland.timesheetBackend.domain.User;
 import java.util.List;
 
 public interface BaseUserService {
-    User saveUser(User user);
+    User saveUser(User user) throws Exception;
     User getUser(String username);
     void deleteUser(Long id);
 }

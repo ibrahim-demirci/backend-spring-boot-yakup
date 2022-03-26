@@ -43,11 +43,19 @@ public class UserService implements BaseUserService, UserDetailsService {
     }
 
     @Override
-    public User saveUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User userSaved = userRepo.save(user);
-        roleService.addRoleToUser(userSaved.getUsername(),"ROLE_USER");
-        return userSaved;
+    public User saveUser(User user) throws Exception{
+        User findedUser = userRepo.findByUsername(user.getUsername());
+        if (findedUser != null) {
+            throw new Exception("username-already-taken");
+        } else {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            User userSaved = userRepo.save(user);
+            roleService.addRoleToUser(userSaved.getUsername(),"ROLE_USER");
+            return userSaved;
+        }
+
+
+
     }
 
     @Override
