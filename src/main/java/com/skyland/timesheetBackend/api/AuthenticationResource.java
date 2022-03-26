@@ -5,6 +5,7 @@ import com.skyland.timesheetBackend.domain.User;
 import com.skyland.timesheetBackend.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,8 +24,9 @@ public class AuthenticationResource {
 
     @PostMapping("/signup")
     public ResponseEntity<User> saveUser(@RequestBody User user) {
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("message", "user-registered");
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/authenticate/signup").toUriString());
-        log.info("Sign up user is" +  user);
-        return ResponseEntity.created(uri).body(userService.saveUser(user));
+        return ResponseEntity.created(uri).headers(responseHeaders).body(userService.saveUser(user));
     }
 }
