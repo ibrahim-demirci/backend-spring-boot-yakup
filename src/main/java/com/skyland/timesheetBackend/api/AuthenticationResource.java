@@ -2,6 +2,9 @@ package com.skyland.timesheetBackend.api;
 
 
 import com.skyland.timesheetBackend.api.model.ApiResponseBody;
+import com.skyland.timesheetBackend.api.model.ErrorInfo;
+import com.skyland.timesheetBackend.api.utilities.ErrorMessage;
+import com.skyland.timesheetBackend.api.utilities.ResponseStatus;
 import com.skyland.timesheetBackend.domain.User;
 import com.skyland.timesheetBackend.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/authenticate") @RequiredArgsConstructor
 @Slf4j
+
+
 public class AuthenticationResource {
 
     private final UserService userService;
@@ -29,15 +34,15 @@ public class AuthenticationResource {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/authenticate/signup").toUriString());
         try {
             User savedUser = userService.saveUser(user);
-            ApiResponseBody responseBody = new ApiResponseBody(true,"success",null);
+            ApiResponseBody responseBody = new ApiResponseBody(true,ResponseStatus.STATUS_SUCCESS,null);
             return ResponseEntity.created(uri).body(responseBody);
 
         } catch (Exception e) {
-            Map<String, String> errorMap = new HashMap<>() {{
-                put("type","username-already-taken");
-                put("info","This username is already taken." );
-            }};
-            ApiResponseBody responseBody = new ApiResponseBody(false,"failed", errorMap);
+           ErrorInfo errorInfo =
+                    new ErrorInfo(
+                            ErrorMessage.ErrorMessageType.USERNAME_ALREADY_TAKEN,
+                            ErrorMessage.ErrorMessageInfo.USERNAME_ALREADY_TAKEN_INFO );
+            ApiResponseBody responseBody = new ApiResponseBody(false, ResponseStatus.STATUS_FAILED, errorInfo );
             return ResponseEntity.created(uri).body(responseBody);
         }
 

@@ -1,5 +1,6 @@
 package com.skyland.timesheetBackend.api.model;
 
+import com.skyland.timesheetBackend.api.utilities.ErrorMessage;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -10,5 +11,11 @@ import java.util.Map;
 public class ApiResponseBody {
     private boolean success;
     private String status;
-    private Map<String, String> error = null;
+    private ErrorInfo error = null;
+
+
+
 }
+
+
+
