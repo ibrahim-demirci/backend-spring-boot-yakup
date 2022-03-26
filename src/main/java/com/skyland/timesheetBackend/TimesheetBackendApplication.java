@@ -1,8 +1,8 @@
 package com.skyland.timesheetBackend;
 
-import com.skyland.timesheetBackend.domain.Role;
-import com.skyland.timesheetBackend.domain.Task;
-import com.skyland.timesheetBackend.domain.User;
+import com.skyland.timesheetBackend.model.Role;
+import com.skyland.timesheetBackend.model.Task;
+import com.skyland.timesheetBackend.model.User;
 import com.skyland.timesheetBackend.service.role.RoleService;
 import com.skyland.timesheetBackend.service.task.TaskService;
 import com.skyland.timesheetBackend.service.user.UserService;
@@ -15,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 
 @SpringBootApplication
 public class TimesheetBackendApplication {

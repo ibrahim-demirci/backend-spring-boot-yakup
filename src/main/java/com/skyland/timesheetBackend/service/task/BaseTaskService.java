@@ -1,7 +1,6 @@
 package com.skyland.timesheetBackend.service.task;
 
-import com.skyland.timesheetBackend.domain.Task;
-import com.skyland.timesheetBackend.domain.User;
+import com.skyland.timesheetBackend.model.Task;
 
 import java.util.List;
 

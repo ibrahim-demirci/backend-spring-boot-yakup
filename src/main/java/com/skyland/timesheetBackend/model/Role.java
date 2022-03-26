@@ -1,4 +1,4 @@
-package com.skyland.timesheetBackend.domain;
+package com.skyland.timesheetBackend.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

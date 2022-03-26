@@ -1,9 +1,8 @@
-package com.skyland.timesheetBackend.domain;
+package com.skyland.timesheetBackend.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;

@@ -1,7 +1,7 @@
 package com.skyland.timesheetBackend.api;
 
 
-import com.skyland.timesheetBackend.domain.User;
+import com.skyland.timesheetBackend.model.User;
 import com.skyland.timesheetBackend.service.admin.BaseAdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,8 +1,7 @@
 package com.skyland.timesheetBackend.service.task;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
-import com.skyland.timesheetBackend.domain.Task;
-import com.skyland.timesheetBackend.domain.User;
+import com.skyland.timesheetBackend.model.Task;
+import com.skyland.timesheetBackend.model.User;
 import com.skyland.timesheetBackend.repo.TaskRepo;
 import com.skyland.timesheetBackend.repo.UserRepo;
 import lombok.RequiredArgsConstructor;

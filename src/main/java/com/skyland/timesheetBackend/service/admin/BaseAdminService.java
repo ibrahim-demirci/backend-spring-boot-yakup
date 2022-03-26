@@ -1,6 +1,6 @@
 package com.skyland.timesheetBackend.service.admin;
 
-import com.skyland.timesheetBackend.domain.User;
+import com.skyland.timesheetBackend.model.User;
 
 import java.util.List;
 

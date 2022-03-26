@@ -1,7 +1,7 @@
 package com.skyland.timesheetBackend.service.role;
 
 
-import com.skyland.timesheetBackend.domain.Role;
+import com.skyland.timesheetBackend.model.Role;
 
 public interface BaseRoleService {
 

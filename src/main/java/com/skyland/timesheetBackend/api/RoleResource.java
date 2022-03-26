@@ -1,6 +1,6 @@
 package com.skyland.timesheetBackend.api;
 
-import com.skyland.timesheetBackend.domain.Role;
+import com.skyland.timesheetBackend.model.Role;
 import com.skyland.timesheetBackend.service.role.BaseRoleService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,6 @@
 package com.skyland.timesheetBackend.api;
 
-import com.skyland.timesheetBackend.domain.Role;
-import com.skyland.timesheetBackend.domain.Task;
+import com.skyland.timesheetBackend.model.Task;
 import com.skyland.timesheetBackend.service.task.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

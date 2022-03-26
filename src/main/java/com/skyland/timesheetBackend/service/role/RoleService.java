@@ -1,11 +1,10 @@
 package com.skyland.timesheetBackend.service.role;
 
 
-import com.skyland.timesheetBackend.domain.Role;
-import com.skyland.timesheetBackend.domain.User;
+import com.skyland.timesheetBackend.model.Role;
+import com.skyland.timesheetBackend.model.User;
 import com.skyland.timesheetBackend.repo.RoleRepo;
 import com.skyland.timesheetBackend.repo.UserRepo;
-import com.skyland.timesheetBackend.service.role.BaseRoleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

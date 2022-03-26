@@ -1,11 +1,11 @@
 package com.skyland.timesheetBackend.api;
 
 
-import com.skyland.timesheetBackend.api.model.ApiResponseBody;
-import com.skyland.timesheetBackend.api.model.ErrorInfo;
+import com.skyland.timesheetBackend.api.responseModel.ApiResponseBody;
+import com.skyland.timesheetBackend.api.responseModel.ErrorInfo;
 import com.skyland.timesheetBackend.api.utilities.ErrorMessage;
 import com.skyland.timesheetBackend.api.utilities.ResponseStatus;
-import com.skyland.timesheetBackend.domain.User;
+import com.skyland.timesheetBackend.model.User;
 import com.skyland.timesheetBackend.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/authenticate") @RequiredArgsConstructor

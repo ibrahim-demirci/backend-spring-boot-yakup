@@ -1,6 +1,6 @@
 package com.skyland.timesheetBackend.service.admin;
 
-import com.skyland.timesheetBackend.domain.User;
+import com.skyland.timesheetBackend.model.User;
 import com.skyland.timesheetBackend.repo.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

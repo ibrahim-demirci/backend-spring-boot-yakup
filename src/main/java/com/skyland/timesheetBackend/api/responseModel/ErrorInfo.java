@@ -1,5 +1,4 @@
-package com.skyland.timesheetBackend.api.model;
-import com.skyland.timesheetBackend.api.utilities.ErrorMessage;
+package com.skyland.timesheetBackend.api.responseModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
