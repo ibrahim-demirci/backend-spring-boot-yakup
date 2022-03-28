@@ -1,5 +1,6 @@
 package com.skyland.timesheetBackend.service.task;
 
+import com.skyland.timesheetBackend.dto.TaskDto;
 import com.skyland.timesheetBackend.model.Task;
 import com.skyland.timesheetBackend.model.User;
 import com.skyland.timesheetBackend.repo.TaskRepo;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,8 +35,10 @@ public class TaskService implements BaseTaskService {
     }
 
     @Override
-    public List<Task> getTasks() {
-        return taskRepo.findAll();
+    public List<TaskDto> getTasks() {
+        return taskRepo.findAll()
+                .stream().map(
+                        this::convertEntityToDto).collect(Collectors.toList());
     }
 
     @Override
@@ -53,9 +57,22 @@ public class TaskService implements BaseTaskService {
         taskRepo.deleteById(id);
     }
 
+
     @Override
-    public List<Task> findByUserId(String username) {
+    public List<Task> findTasksByUserId(String username) {
         log.info(taskRepo.findByUserId(username).toString());
         return taskRepo.findByUserId(username);
+    }
+
+
+    private TaskDto convertEntityToDto(Task task) {
+        TaskDto taskDto = new TaskDto();
+        taskDto.setId(task.getId());
+        taskDto.setDescription(task.getDescription());
+        taskDto.setTitle(task.getTitle());
+        taskDto.setCreationDate(task.getCreationDate());
+        taskDto.setPlannedFinishDate(task.getPlannedFinishDate());
+        taskDto.setUsername(task.getUser().getUsername());
+        return taskDto;
     }
 }

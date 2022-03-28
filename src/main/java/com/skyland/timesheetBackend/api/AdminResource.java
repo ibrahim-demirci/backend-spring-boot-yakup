@@ -22,7 +22,7 @@ public class AdminResource {
     }
 
     @PutMapping("/verify")
-    public ResponseEntity<User> getEmployeeById(@RequestBody User user) {
+    public ResponseEntity<User> verifyUser(@RequestBody User user) {
         User updatedUser = adminService.verifyUser(user);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }

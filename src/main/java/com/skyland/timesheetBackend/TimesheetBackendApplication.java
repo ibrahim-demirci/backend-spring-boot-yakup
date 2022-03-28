@@ -6,6 +6,7 @@ import com.skyland.timesheetBackend.model.User;
 import com.skyland.timesheetBackend.service.role.RoleService;
 import com.skyland.timesheetBackend.service.task.TaskService;
 import com.skyland.timesheetBackend.service.user.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -50,7 +51,7 @@ public class TimesheetBackendApplication {
 			taskService.addUserToTask("jim",Long.valueOf(7));
 			taskService.addUserToTask("jim",Long.valueOf(8));
 
-			taskService.findByUserId("5");
+			taskService.findTasksByUserId("5");
 		};
 	}
 }

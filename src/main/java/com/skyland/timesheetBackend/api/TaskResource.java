@@ -1,5 +1,6 @@
 package com.skyland.timesheetBackend.api;
 
+import com.skyland.timesheetBackend.dto.TaskDto;
 import com.skyland.timesheetBackend.model.Task;
 import com.skyland.timesheetBackend.service.task.TaskService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class TaskResource {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Task>> getAllTasks() {
+    public ResponseEntity<List<TaskDto>> getAllTasks() {
         return ResponseEntity.ok(taskService.getTasks());
     }
 

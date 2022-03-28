@@ -52,8 +52,6 @@ public class UserService implements BaseUserService, UserDetailsService {
             return userSaved;
         }
 
-
-
     }
 
     @Override
