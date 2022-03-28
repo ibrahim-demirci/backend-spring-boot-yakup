@@ -12,5 +12,5 @@ public interface BaseTaskService {
     List<TaskDto> getTasks();
     public void addUserToTask(String  username, Long taskId);
     public void deleteTask(Long id);
-    List<Task> findTasksByUserId(String user_id);
+    List<TaskDto> getTasksByUserId(Long user_id);
 }

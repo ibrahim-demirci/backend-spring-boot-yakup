@@ -59,9 +59,11 @@ public class TaskService implements BaseTaskService {
 
 
     @Override
-    public List<Task> findTasksByUserId(String username) {
-        log.info(taskRepo.findByUserId(username).toString());
-        return taskRepo.findByUserId(username);
+    public List<TaskDto> getTasksByUserId(Long userId) {
+        return taskRepo.findTasksByUserId(userId)
+                .stream()
+                .map(this::convertEntityToDto)
+                .collect(Collectors.toList());
     }
 
 

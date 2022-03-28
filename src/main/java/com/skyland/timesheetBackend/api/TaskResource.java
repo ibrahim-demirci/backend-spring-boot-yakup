@@ -28,6 +28,11 @@ public class TaskResource {
         return ResponseEntity.ok(taskService.getTasks());
     }
 
+    @GetMapping("/fromuser/{id}")
+    public ResponseEntity<List<TaskDto>> getTasksByUserId(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(taskService.getTasksByUserId(id));
+    }
+
     @DeleteMapping("/delete/{id}")
     public void deleteTask(@PathVariable("id") Long id) {
         taskService.deleteTask(id);

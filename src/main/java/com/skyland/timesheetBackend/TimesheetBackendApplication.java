@@ -51,7 +51,7 @@ public class TimesheetBackendApplication {
 			taskService.addUserToTask("jim",Long.valueOf(7));
 			taskService.addUserToTask("jim",Long.valueOf(8));
 
-			taskService.findTasksByUserId("5");
+			taskService.getTasksByUserId(Long.valueOf(5));
 		};
 	}
 }
