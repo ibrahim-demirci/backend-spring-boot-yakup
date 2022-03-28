@@ -48,6 +48,9 @@ public class TimesheetBackendApplication {
 
 
 			taskService.addUserToTask("jim",Long.valueOf(7));
+			taskService.addUserToTask("jim",Long.valueOf(8));
+
+			taskService.findByUserId("5");
 		};
 	}
 }

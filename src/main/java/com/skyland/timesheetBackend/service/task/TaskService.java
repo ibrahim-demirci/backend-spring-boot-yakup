@@ -52,4 +52,10 @@ public class TaskService implements BaseTaskService {
     public void deleteTask(Long id) {
         taskRepo.deleteById(id);
     }
+
+    @Override
+    public List<Task> findByUserId(String username) {
+        log.info(taskRepo.findByUserId(username).toString());
+        return taskRepo.findByUserId(username);
+    }
 }
