@@ -4,7 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skyland.timesheetBackend.api.responseModel.ErrorInfo;
-import com.skyland.timesheetBackend.filter.responseModel.LoginResponse;
+import com.skyland.timesheetBackend.filter.responseModel.LoginFailResponse;
+import com.skyland.timesheetBackend.filter.responseModel.LoginSuccessResponse;
 import com.skyland.timesheetBackend.filter.responseModel.Token;
 import com.skyland.timesheetBackend.utilities.ErrorMessageUtilities;
 import com.skyland.timesheetBackend.utilities.ResponseStatusUtilities;
@@ -52,12 +53,13 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         User user = (User) authResult.getPrincipal();
 
         // LoginResponse when success login
-        LoginResponse loginResponse =
-                new LoginResponse(
+        LoginSuccessResponse loginResponse =
+                new LoginSuccessResponse(
                         true,
                         ResponseStatusUtilities.STATUS_LOGIN,
                         null,
-                        createTokens(user, request)
+                        createTokens(user, request),
+                        user.getUsername()
                 );
 
         response.setContentType(APPLICATION_JSON_VALUE);
@@ -70,15 +72,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         ErrorInfo errorInfo = new ErrorInfo(ErrorMessageUtilities.ErrorMessageType.USER_NOT_FOUND, ErrorMessageUtilities.ErrorMessageInfo.USER_NOT_FOUND_INFO);
 
-        // Token
-        Token token = new Token(null, null);
         // LoginResponse
-        LoginResponse loginResponse =
-                new LoginResponse(
+        LoginFailResponse loginResponse =
+                new LoginFailResponse(
                         false,
                         ResponseStatusUtilities.STATUS_FAILED,
-                        errorInfo,
-                        token
+                        errorInfo
                 );
 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
