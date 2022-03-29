@@ -5,7 +5,7 @@ import lombok.Data;
 
 // Data for convert to map
 @AllArgsConstructor @Data
-public class ApiResponseBody {
+public class SignUpResponse {
     private boolean success;
     private String status;
     private ErrorInfo error = null;

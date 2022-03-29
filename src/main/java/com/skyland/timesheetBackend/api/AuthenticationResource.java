@@ -1,7 +1,7 @@
 package com.skyland.timesheetBackend.api;
 
 
-import com.skyland.timesheetBackend.api.responseModel.ApiResponseBody;
+import com.skyland.timesheetBackend.api.responseModel.SignUpResponse;
 import com.skyland.timesheetBackend.api.responseModel.ErrorInfo;
 import com.skyland.timesheetBackend.model.User;
 import com.skyland.timesheetBackend.service.user.UserService;
@@ -35,11 +35,11 @@ public class AuthenticationResource {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponseBody> saveUser(@RequestBody User user) {
+    public ResponseEntity<SignUpResponse> saveUser(@RequestBody User user) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/authenticate/signup").toUriString());
         try {
             User savedUser = userService.saveUser(user);
-            ApiResponseBody responseBody = new ApiResponseBody(true, STATUS_CREATED,null);
+            SignUpResponse responseBody = new SignUpResponse(true, STATUS_CREATED,null);
             return ResponseEntity.created(uri).body(responseBody);
 
         } catch (Exception e) {
@@ -48,14 +48,14 @@ public class AuthenticationResource {
                         new ErrorInfo(
                                 USERNAME_ALREADY_TAKEN,
                                 USERNAME_ALREADY_TAKEN_INFO );
-                ApiResponseBody responseBody = new ApiResponseBody(false, STATUS_FAILED, errorInfo );
+                SignUpResponse responseBody = new SignUpResponse(false, STATUS_FAILED, errorInfo );
                 return ResponseEntity.created(uri).body(responseBody);
             }  else {
                 ErrorInfo errorInfo =
                         new ErrorInfo(
                                 UNKNOWN_ERROR,
                                 UNKNOWN_ERROR_INFO );
-                ApiResponseBody responseBody = new ApiResponseBody(false, STATUS_FAILED, errorInfo );
+                SignUpResponse responseBody = new SignUpResponse(false, STATUS_FAILED, errorInfo );
                 return ResponseEntity.created(uri).body(responseBody);
             }
         }
