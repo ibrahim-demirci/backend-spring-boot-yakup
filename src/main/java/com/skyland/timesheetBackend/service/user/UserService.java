@@ -16,6 +16,8 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static com.skyland.timesheetBackend.utilities.ErrorMessageUtilities.ErrorMessageType.USERNAME_ALREADY_TAKEN;
+
 @Service @RequiredArgsConstructor @Transactional @Slf4j
 public class UserService implements BaseUserService, UserDetailsService {
 
@@ -44,7 +46,7 @@ public class UserService implements BaseUserService, UserDetailsService {
     public User saveUser(User user) throws Exception{
         User findedUser = userRepo.findByUsername(user.getUsername());
         if (findedUser != null) {
-            throw new Exception("username-already-taken");
+            throw new Exception(USERNAME_ALREADY_TAKEN);
         } else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             User userSaved = userRepo.save(user);
