@@ -3,6 +3,11 @@ package com.skyland.timesheetBackend.filter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.skyland.timesheetBackend.api.responseModel.ErrorInfo;
+import com.skyland.timesheetBackend.filter.responseModel.LoginResponse;
+import com.skyland.timesheetBackend.filter.responseModel.Token;
+import com.skyland.timesheetBackend.utilities.ErrorMessageUtilities;
+import com.skyland.timesheetBackend.utilities.ResponseStatusUtilities;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,8 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -47,6 +50,48 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         User user = (User) authResult.getPrincipal();
+
+        // LoginResponse when success login
+        LoginResponse loginResponse =
+                new LoginResponse(
+                        true,
+                        ResponseStatusUtilities.STATUS_LOGIN,
+                        null,
+                        createTokens(user, request)
+                );
+
+        response.setContentType(APPLICATION_JSON_VALUE);
+        new ObjectMapper().writeValue(response.getOutputStream(), loginResponse);
+    }
+
+    // When username and password authentication failed called this method.
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+
+        ErrorInfo errorInfo = new ErrorInfo(ErrorMessageUtilities.ErrorMessageType.USER_NOT_FOUND, ErrorMessageUtilities.ErrorMessageInfo.USER_NOT_FOUND_INFO);
+
+        // Token
+        Token token = new Token(null, null);
+        // LoginResponse
+        LoginResponse loginResponse =
+                new LoginResponse(
+                        false,
+                        ResponseStatusUtilities.STATUS_FAILED,
+                        errorInfo,
+                        token
+                );
+
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType(APPLICATION_JSON_VALUE);
+
+        try {
+            new ObjectMapper().writeValue(response.getOutputStream(), loginResponse);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Token createTokens(User user, HttpServletRequest request ) {
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
         String access_token = JWT.create()
                 .withSubject(user.getUsername())
@@ -61,10 +106,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
 
-        Map<String, String> tokens = new HashMap<>();
-        tokens.put("access_token",access_token);
-        tokens.put("refresh_token",refresh_token);
-        response.setContentType(APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+
+        return new Token(access_token,refresh_token);
     }
 }
