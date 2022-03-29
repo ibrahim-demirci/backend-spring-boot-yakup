@@ -1,5 +1,6 @@
 package com.skyland.timesheetBackend.service.user;
 
+import com.skyland.timesheetBackend.dto.UserDto;
 import com.skyland.timesheetBackend.model.User;
 import com.skyland.timesheetBackend.repo.UserRepo;
 import com.skyland.timesheetBackend.service.role.RoleService;
@@ -57,8 +58,15 @@ public class UserService implements BaseUserService, UserDetailsService {
     }
 
     @Override
-    public User getUser(String username) {
+    public UserDto getUserDtoByUsername(String username) {
+        User user = userRepo.findByUsername(username);
+        return convertEntityToDto(user) ;
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
         return userRepo.findByUsername(username);
+
     }
 
     @Override
@@ -66,5 +74,16 @@ public class UserService implements BaseUserService, UserDetailsService {
         userRepo.deleteById(id);
     }
 
+    private UserDto convertEntityToDto(User user) {
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setName(user.getName());
+        userDto.setSurname(user.getSurname());
+        userDto.setUsername(user.getUsername());
+        userDto.setPhone(user.getPhone());
+        userDto.setVerified(user.isVerified());
+        userDto.setDescription(user.getDescription());
+        return userDto;
+    }
 
 }

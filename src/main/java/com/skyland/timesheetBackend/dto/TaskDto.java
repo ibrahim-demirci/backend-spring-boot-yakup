@@ -1,11 +1,8 @@
 package com.skyland.timesheetBackend.dto;
 
-import com.skyland.timesheetBackend.model.Task;
-import com.skyland.timesheetBackend.model.User;
 import lombok.Data;
 
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
+
 import java.sql.Timestamp;
 
 @Data
