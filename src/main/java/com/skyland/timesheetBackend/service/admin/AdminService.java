@@ -38,6 +38,7 @@ public class AdminService implements BaseAdminService {
         userDto.setId(user.getId());
         userDto.setName(user.getName());
         userDto.setSurname(user.getSurname());
+        userDto.setJobTitle(user.getJobTitle());
         userDto.setDescription(user.getDescription());
         userDto.setEmail(user.getEmail());
         userDto.setPhone(user.getPhone());
