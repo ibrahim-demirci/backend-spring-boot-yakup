@@ -1,6 +1,7 @@
 package com.skyland.timesheetBackend.api;
 
 
+import com.skyland.timesheetBackend.dto.UserDto;
 import com.skyland.timesheetBackend.model.User;
 import com.skyland.timesheetBackend.service.admin.BaseAdminService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class AdminResource {
     private final BaseAdminService adminService;
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getUsers() {
+    public ResponseEntity<List<UserDto>> getUsers() {
         return ResponseEntity.ok(adminService.getUsers());
     }
 

@@ -45,6 +45,7 @@ public class UserService implements BaseUserService, UserDetailsService {
 
     @Override
     public User saveUser(User user) throws Exception{
+        log.info(user.toString());
         User findedUser = userRepo.findByUsername(user.getUsername());
         if (findedUser != null) {
             throw new Exception(USERNAME_ALREADY_TAKEN);
@@ -79,7 +80,6 @@ public class UserService implements BaseUserService, UserDetailsService {
         userDto.setId(user.getId());
         userDto.setName(user.getName());
         userDto.setSurname(user.getSurname());
-        userDto.setUsername(user.getUsername());
         userDto.setPhone(user.getPhone());
         userDto.setVerified(user.isVerified());
         userDto.setDescription(user.getDescription());

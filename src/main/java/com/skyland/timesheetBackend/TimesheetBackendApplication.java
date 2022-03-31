@@ -6,7 +6,6 @@ import com.skyland.timesheetBackend.model.User;
 import com.skyland.timesheetBackend.service.role.RoleService;
 import com.skyland.timesheetBackend.service.task.TaskService;
 import com.skyland.timesheetBackend.service.user.UserService;
-import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -35,10 +34,10 @@ public class TimesheetBackendApplication {
 			roleService.saveRole(new Role(null,"ROLE_USER"));
 			roleService.saveRole(new Role(null,"ROLE_ADMIN"));
 
-			userService.saveUser(new User("John","Travolta", "555 555 55 55","description","john", "1234", new ArrayList<>()));
-			userService.saveUser(new User("Will","Smith", "555 555 55 55","description","will", "1234", new ArrayList<>()));
-			userService.saveUser(new User("Jim","Carry", "555 555 55 55","description","jim", "1234", new ArrayList<>()));
-			userService.saveUser(new User("Arnold","Sch", "555 555 55 55","description","arnold", "1234", new ArrayList<>()));
+			userService.saveUser(new User("John","Travolta","IOS Dev", "555 555 55 55","description","john", "1234"));
+			userService.saveUser(new User("Will","Smith", ".NET Dev","555 555 55 55","description","will", "1234"));
+			userService.saveUser(new User("Jim","Carry", "Android Dev","555 555 55 55","description","jim", "1234"));
+			userService.saveUser(new User("Arnold","Sch", "UI Designer","555 555 55 55","description","arnold", "1234"));
 
 
 			roleService.addRoleToUser("jim", "ROLE_ADMIN");
