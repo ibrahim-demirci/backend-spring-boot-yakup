@@ -11,5 +11,6 @@ public class UserDto {
     private String jobTitle;
     private String phone;
     private String description;
+    private String email;
     private boolean isVerified;
 }

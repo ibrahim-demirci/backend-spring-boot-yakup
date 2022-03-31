@@ -34,10 +34,10 @@ public class TimesheetBackendApplication {
 			roleService.saveRole(new Role(null,"ROLE_USER"));
 			roleService.saveRole(new Role(null,"ROLE_ADMIN"));
 
-			userService.saveUser(new User("John","Travolta","IOS Dev", "555 555 55 55","description","john", "1234"));
-			userService.saveUser(new User("Will","Smith", ".NET Dev","555 555 55 55","description","will", "1234"));
-			userService.saveUser(new User("Jim","Carry", "Android Dev","555 555 55 55","description","jim", "1234"));
-			userService.saveUser(new User("Arnold","Sch", "UI Designer","555 555 55 55","description","arnold", "1234"));
+			userService.saveUser(new User("John","Travolta","IOS Dev", "555 555 55 55","description","john@gmail.com","john", "1234"));
+			userService.saveUser(new User("Will","Smith", ".NET Dev","555 555 55 55","description","will@gmail.com","will", "1234"));
+			userService.saveUser(new User("Jim","Carry", "Android Dev","555 555 55 55","description","jim@gmail.com","jim", "1234"));
+			userService.saveUser(new User("Arnold","Sch", "UI Designer","555 555 55 55","description","arnold@gmail.com","arnold", "1234"));
 
 
 			roleService.addRoleToUser("jim", "ROLE_ADMIN");
