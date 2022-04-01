@@ -12,23 +12,23 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/task") @RequiredArgsConstructor
+@RequestMapping("/api") @RequiredArgsConstructor
 public class TaskResource {
 
     private final TaskService taskService;
 
-    @PostMapping("/save")
+    @PostMapping("/task/save")
     public ResponseEntity<Task> saveTask(@RequestBody Task task) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/task/save").toUriString());
         return ResponseEntity.created(uri).body(taskService.saveTask(task));
     }
 
-    @GetMapping("/all")
+    @GetMapping("/tasks")
     public ResponseEntity<List<TaskDto>> getAllTasks() {
         return ResponseEntity.ok(taskService.getTasks());
     }
 
-    @GetMapping("/fromuser/{id}")
+    @GetMapping("/task/fromuser/{id}")
     public ResponseEntity<List<TaskDto>> getTasksByUserId(@PathVariable("id") Long id) {
         return ResponseEntity.ok(taskService.getTasksByUserId(id));
     }

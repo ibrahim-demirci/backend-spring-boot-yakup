@@ -16,10 +16,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
+import static com.skyland.timesheetBackend.utilities.ErrorMessageUtilities.ErrorMessageInfo.UNKNOWN_ERROR_INFO;
 import static com.skyland.timesheetBackend.utilities.ErrorMessageUtilities.ErrorMessageType.USERNAME_ALREADY_TAKEN;
 import static com.skyland.timesheetBackend.utilities.ErrorMessageUtilities.ErrorMessageInfo.USERNAME_ALREADY_TAKEN_INFO;
 import static com.skyland.timesheetBackend.utilities.ErrorMessageUtilities.ErrorMessageType.UNKNOWN_ERROR;
-import static com.skyland.timesheetBackend.utilities.ErrorMessageUtilities.ErrorMessageInfo.UNKNOWN_ERROR_INFO;
 
 import static com.skyland.timesheetBackend.utilities.ResponseStatusUtilities.STATUS_FAILED;
 import static com.skyland.timesheetBackend.utilities.ResponseStatusUtilities.STATUS_CREATED;

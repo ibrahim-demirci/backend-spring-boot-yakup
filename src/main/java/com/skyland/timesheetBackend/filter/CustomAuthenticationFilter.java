@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -70,7 +71,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
 
-        ErrorInfo errorInfo = new ErrorInfo(ErrorMessageUtilities.ErrorMessageType.USER_NOT_FOUND, ErrorMessageUtilities.ErrorMessageInfo.USER_NOT_FOUND_INFO);
+        ErrorInfo errorInfo = new ErrorInfo(ErrorMessageUtilities.ErrorMessageType.USERNAME_OR_PASSWORD_WRONG, ErrorMessageUtilities.ErrorMessageInfo.USERNAME_OR_PASSWORD_WRONG_INFO);
 
         // LoginResponse
         LoginFailResponse loginResponse =
