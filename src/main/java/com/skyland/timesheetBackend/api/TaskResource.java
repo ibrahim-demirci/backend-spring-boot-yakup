@@ -17,23 +17,25 @@ public class TaskResource {
 
     private final TaskService taskService;
 
-    @PostMapping("/task/save")
-    public ResponseEntity<Task> saveTask(@RequestBody Task task) {
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/task/save").toUriString());
-        return ResponseEntity.created(uri).body(taskService.saveTask(task));
-    }
+//    This feature for other task
+
+//    @PostMapping("/task/save")
+//    public ResponseEntity<Task> saveTask(@RequestBody Task task) {
+//        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/task/save").toUriString());
+//        return ResponseEntity.created(uri).body(taskService.saveTask(task));
+//    }
 
     @GetMapping("/tasks")
     public ResponseEntity<List<TaskDto>> getAllTasks() {
         return ResponseEntity.ok(taskService.getTasks());
     }
 
-    @GetMapping("/task/fromuser/{id}")
+    @GetMapping("/task/byuserid/{id}")
     public ResponseEntity<List<TaskDto>> getTasksByUserId(@PathVariable("id") Long id) {
         return ResponseEntity.ok(taskService.getTasksByUserId(id));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("task/delete/{id}")
     public void deleteTask(@PathVariable("id") Long id) {
         taskService.deleteTask(id);
     }

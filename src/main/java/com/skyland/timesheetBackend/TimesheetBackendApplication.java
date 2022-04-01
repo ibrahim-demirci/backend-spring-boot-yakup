@@ -54,6 +54,7 @@ public class TimesheetBackendApplication {
 			taskService.getTasksByUserId(Long.valueOf(5));
 
 			adminService.verifyUser("arnold");
+			adminService.verifyUser("jim");
 
 		};
 	}
