@@ -9,9 +9,6 @@ public class SignUpResponse {
     private boolean success;
     private String status;
     private ErrorInfo error = null;
-
-
-
 }
 
 

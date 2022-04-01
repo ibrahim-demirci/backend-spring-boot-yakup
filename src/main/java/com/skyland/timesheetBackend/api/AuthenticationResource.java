@@ -1,8 +1,8 @@
 package com.skyland.timesheetBackend.api;
 
 
-import com.skyland.timesheetBackend.api.responseModel.SignUpResponse;
 import com.skyland.timesheetBackend.api.responseModel.ErrorInfo;
+import com.skyland.timesheetBackend.api.responseModel.SignUpResponse;
 import com.skyland.timesheetBackend.model.User;
 import com.skyland.timesheetBackend.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,15 +16,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
-import static com.skyland.timesheetBackend.utilities.ErrorMessageUtilities.ErrorMessageInfo.UNKNOWN_ERROR_INFO;
-import static com.skyland.timesheetBackend.utilities.ErrorMessageUtilities.ErrorMessageType.USERNAME_ALREADY_TAKEN;
-import static com.skyland.timesheetBackend.utilities.ErrorMessageUtilities.ErrorMessageInfo.USERNAME_ALREADY_TAKEN_INFO;
-import static com.skyland.timesheetBackend.utilities.ErrorMessageUtilities.ErrorMessageType.UNKNOWN_ERROR;
-
-import static com.skyland.timesheetBackend.utilities.ResponseStatusUtilities.STATUS_FAILED;
-import static com.skyland.timesheetBackend.utilities.ResponseStatusUtilities.STATUS_CREATED;
-
-
+import static com.skyland.timesheetBackend.constants.K.ErrorMessageInfo.*;
+import static com.skyland.timesheetBackend.constants.K.ErrorMessageType.*;
+import static com.skyland.timesheetBackend.constants.K.ResponseStatusUtilities.*;
 
 @RestController
 @RequestMapping("/api/authenticate") @RequiredArgsConstructor

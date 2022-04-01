@@ -8,5 +8,5 @@ import java.util.List;
 public interface BaseAdminService {
 
     public List<UserDto> getUsers();
-    public User verifyUser(User user);
+    public UserDto verifyUser(String username) throws Exception;
 }

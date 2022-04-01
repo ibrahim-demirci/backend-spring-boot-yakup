@@ -3,6 +3,7 @@ package com.skyland.timesheetBackend;
 import com.skyland.timesheetBackend.model.Role;
 import com.skyland.timesheetBackend.model.Task;
 import com.skyland.timesheetBackend.model.User;
+import com.skyland.timesheetBackend.service.admin.AdminService;
 import com.skyland.timesheetBackend.service.role.RoleService;
 import com.skyland.timesheetBackend.service.task.TaskService;
 import com.skyland.timesheetBackend.service.user.UserService;
@@ -29,7 +30,7 @@ public class TimesheetBackendApplication {
 	}
 
 	@Bean
-	CommandLineRunner run(UserService userService, RoleService roleService, TaskService taskService) {
+	CommandLineRunner run(UserService userService, RoleService roleService, TaskService taskService, AdminService adminService) {
 		return args -> {
 			roleService.saveRole(new Role(null,"ROLE_USER"));
 			roleService.saveRole(new Role(null,"ROLE_ADMIN"));
@@ -51,6 +52,9 @@ public class TimesheetBackendApplication {
 			taskService.addUserToTask("jim",Long.valueOf(8));
 
 			taskService.getTasksByUserId(Long.valueOf(5));
+
+			adminService.verifyUser("arnold");
+
 		};
 	}
 }

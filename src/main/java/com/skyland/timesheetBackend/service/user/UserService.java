@@ -6,6 +6,7 @@ import com.skyland.timesheetBackend.repo.UserRepo;
 import com.skyland.timesheetBackend.service.role.RoleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,7 +18,8 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static com.skyland.timesheetBackend.utilities.ErrorMessageUtilities.ErrorMessageType.USERNAME_ALREADY_TAKEN;
+import static com.skyland.timesheetBackend.constants.K.ErrorMessageType.*;
+
 
 @Service @RequiredArgsConstructor @Transactional @Slf4j
 public class UserService implements BaseUserService, UserDetailsService {
@@ -30,7 +32,10 @@ public class UserService implements BaseUserService, UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.findByUsername(username);
         if(user == null) {
-            throw new UsernameNotFoundException("");
+            throw new BadCredentialsException(USER_NOT_FOUND);
+        }
+        if (user.isVerified() == false) {
+            throw new BadCredentialsException(USER_NOT_VERIFIED);
         }
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
