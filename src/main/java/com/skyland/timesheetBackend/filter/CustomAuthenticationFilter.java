@@ -7,8 +7,6 @@ import com.skyland.timesheetBackend.api.responseModel.ErrorInfo;
 import com.skyland.timesheetBackend.filter.responseModel.LoginFailResponse;
 import com.skyland.timesheetBackend.filter.responseModel.LoginSuccessResponse;
 import com.skyland.timesheetBackend.filter.responseModel.Token;
-import com.skyland.timesheetBackend.utilities.ErrorMessageUtilities;
-import com.skyland.timesheetBackend.utilities.ResponseStatusUtilities;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,7 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -27,6 +24,11 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.stream.Collectors;
 
+
+import static com.skyland.timesheetBackend.constants.K.ErrorMessageInfo.*;
+import static com.skyland.timesheetBackend.constants.K.ErrorMessageType.*;
+import static com.skyland.timesheetBackend.constants.K.ResponseStatusUtilities.STATUS_FAILED;
+import static com.skyland.timesheetBackend.constants.K.ResponseStatusUtilities.STATUS_LOGIN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
@@ -57,7 +59,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         LoginSuccessResponse loginResponse =
                 new LoginSuccessResponse(
                         true,
-                        ResponseStatusUtilities.STATUS_LOGIN,
+                        STATUS_LOGIN,
                         null,
                         createTokens(user, request),
                         user.getUsername()
@@ -71,17 +73,20 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
 
-        ErrorInfo errorInfo = new ErrorInfo(ErrorMessageUtilities.ErrorMessageType.USERNAME_OR_PASSWORD_WRONG, ErrorMessageUtilities.ErrorMessageInfo.USERNAME_OR_PASSWORD_WRONG_INFO);
+        LoginFailResponse loginResponse;
 
-        // LoginResponse
-        LoginFailResponse loginResponse =
-                new LoginFailResponse(
-                        false,
-                        ResponseStatusUtilities.STATUS_FAILED,
-                        errorInfo
-                );
+        if(failed.getMessage() == USER_NOT_FOUND) {
+            ErrorInfo errorInfo = new ErrorInfo(USER_NOT_FOUND, USER_NOT_FOUND_INFO);
+            loginResponse = createLoginFailResponse(errorInfo);
 
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        } else if(failed.getMessage() == USER_NOT_VERIFIED){
+            ErrorInfo errorInfo = new ErrorInfo(USER_NOT_VERIFIED, USER_NOT_VERIFIED_INFO);
+            loginResponse = createLoginFailResponse(errorInfo);
+        } else {
+            ErrorInfo errorInfo = new ErrorInfo(USERNAME_OR_PASSWORD_WRONG, USERNAME_OR_PASSWORD_WRONG_INFO);
+            loginResponse = createLoginFailResponse(errorInfo);
+        }
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         response.setContentType(APPLICATION_JSON_VALUE);
 
         try {
@@ -89,6 +94,14 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private LoginFailResponse createLoginFailResponse(ErrorInfo error) {
+        return  new LoginFailResponse(
+                false,
+                STATUS_FAILED,
+                error
+        );
     }
 
     private Token createTokens(User user, HttpServletRequest request ) {
