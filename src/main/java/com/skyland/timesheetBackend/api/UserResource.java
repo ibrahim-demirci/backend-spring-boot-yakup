@@ -6,6 +6,8 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.skyland.timesheetBackend.manager.ResponseManager;
+import com.skyland.timesheetBackend.manager.responseModel.BaseResponse;
 import com.skyland.timesheetBackend.model.Role;
 import com.skyland.timesheetBackend.model.User;
 import com.skyland.timesheetBackend.service.user.BaseUserService;
@@ -80,8 +82,15 @@ public class UserResource {
 
     @DeleteMapping("/user/delete/{id}")
     public ResponseEntity<?> deleteEmployee(@PathVariable("id") Long id) {
-        userService.deleteUser(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        BaseResponse response = null;
+        try {
+            userService.deleteUser(id);
+            response = ResponseManager.getInstance().get_base_response(ResponseManager.STATUS.deleted);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response = ResponseManager.getInstance().get_error_response_with_custom_message(e.getMessage());
+            return  ResponseEntity.ok(response);
+        }
     }
 
 

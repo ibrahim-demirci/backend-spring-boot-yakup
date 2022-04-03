@@ -1,6 +1,6 @@
 package com.skyland.timesheetBackend.api;
 
-import com.skyland.timesheetBackend.manager.responseModel.ErrorInfo;
+import com.skyland.timesheetBackend.manager.responseModel.BaseResponse;
 import com.skyland.timesheetBackend.dto.UserDto;
 import com.skyland.timesheetBackend.manager.ResponseManager;
 import com.skyland.timesheetBackend.service.admin.BaseAdminService;
@@ -22,8 +22,8 @@ public class AdminResource {
     }
 
     @PutMapping("/verify/{username}")
-    public ResponseEntity<ErrorInfo.BaseResponse> verifyUser(@PathVariable("username") String username) {
-        ErrorInfo.BaseResponse baseResponse = null;
+    public ResponseEntity<BaseResponse> verifyUser(@PathVariable("username") String username) {
+        BaseResponse baseResponse = null;
         try {
             adminService.verifyUser(username);
             baseResponse = ResponseManager.getInstance().get_base_response(ResponseManager.STATUS.updated);

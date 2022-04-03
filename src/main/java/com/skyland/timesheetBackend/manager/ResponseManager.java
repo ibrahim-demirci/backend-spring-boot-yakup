@@ -1,9 +1,12 @@
 package com.skyland.timesheetBackend.manager;
 
+import com.skyland.timesheetBackend.manager.responseModel.BaseResponse;
 import com.skyland.timesheetBackend.manager.responseModel.ErrorInfo;
 import com.skyland.timesheetBackend.constants.K;
 import com.skyland.timesheetBackend.manager.responseModel.LoginSuccessResponse;
 import com.skyland.timesheetBackend.manager.responseModel.Token;
+
+import javax.lang.model.type.ErrorType;
 
 import static com.skyland.timesheetBackend.constants.K.ErrorMessageInfo.*;
 import static com.skyland.timesheetBackend.constants.K.ErrorMessageType.*;
@@ -19,7 +22,7 @@ public class ResponseManager {
         return instance;
     }
 
-    enum AUTH_ERROR {
+    public enum AUTH_ERROR {
         expired_token,
         invalid_token,
         signature_verification,
@@ -45,8 +48,8 @@ public class ResponseManager {
         return loginSuccessResponse;
     }
 
-    public ErrorInfo.BaseResponse get_login_fail_response(LOGIN_FAIL login_fail) {
-        ErrorInfo.BaseResponse baseResponse = null;
+    public BaseResponse get_login_fail_response(LOGIN_FAIL login_fail) {
+        BaseResponse baseResponse = null;
         ErrorInfo errorInfo = null;
 
         switch (login_fail) {
@@ -60,13 +63,13 @@ public class ResponseManager {
                 errorInfo = new ErrorInfo(USERNAME_OR_PASSWORD_WRONG, USERNAME_OR_PASSWORD_WRONG_INFO);
                 break;
         }
-        baseResponse = new ErrorInfo.BaseResponse(false, STATUS_FAILED, errorInfo);
+        baseResponse = new BaseResponse(false, STATUS_FAILED, errorInfo);
         return baseResponse;
     }
 
-    public ErrorInfo.BaseResponse get_auth_error_response(AUTH_ERROR error) {
+    public BaseResponse get_auth_error_response(AUTH_ERROR error) {
         ErrorInfo errorInfo = null;
-        ErrorInfo.BaseResponse loginFailResponse = null;
+        BaseResponse loginFailResponse = null;
 
         switch (error) {
             case expired_token:
@@ -85,28 +88,34 @@ public class ResponseManager {
                 errorInfo = new ErrorInfo(K.ErrorMessageType.UNKNOWN_ERROR, UNKNOWN_ERROR_INFO);
         }
 
-        loginFailResponse = new ErrorInfo.BaseResponse(false, K.ResponseStatusUtilities.STATUS_FAILED,errorInfo);
+        loginFailResponse = new BaseResponse(false, K.ResponseStatusUtilities.STATUS_FAILED,errorInfo);
         return loginFailResponse;
     }
 
-    public ErrorInfo.BaseResponse get_base_response(STATUS success) {
-        ErrorInfo.BaseResponse baseResponse = null;
+    public BaseResponse get_base_response(STATUS success) {
+        BaseResponse baseResponse = null;
         switch (success) {
             case created:
-                baseResponse = new ErrorInfo.BaseResponse(true, STATUS_CREATED,null);
+                baseResponse = new BaseResponse(true, STATUS_CREATED,null);
                 break;
             case deleted:
-                baseResponse = new ErrorInfo.BaseResponse(true, STATUS_DELETED,null);
+                baseResponse = new BaseResponse(true, STATUS_DELETED,null);
                 break;
             case updated:
-                baseResponse = new ErrorInfo.BaseResponse(true, STATUS_UPDATED,null);
+                baseResponse = new BaseResponse(true, STATUS_UPDATED,null);
                 break;
             case failed:
                 ErrorInfo errorInfo = new ErrorInfo(USER_NOT_FOUND, USER_NOT_FOUND_INFO);
-                baseResponse = new ErrorInfo.BaseResponse(false,STATUS_FAILED,errorInfo);
+                baseResponse = new BaseResponse(false,STATUS_FAILED,errorInfo);
                 break;
         }
         return baseResponse;
+    }
+
+    public BaseResponse get_error_response_with_custom_message(String message) {
+        BaseResponse baseResponse = null;
+        ErrorInfo errorInfo = new ErrorInfo(UNKNOWN_ERROR, message);
+        return new BaseResponse(false, STATUS_FAILED, errorInfo);
     }
 
 

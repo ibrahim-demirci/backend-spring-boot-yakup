@@ -73,7 +73,9 @@ public class UserService implements BaseUserService, UserDetailsService {
 
     @Override
     public void deleteUser(Long id) {
+        userRepo.findById(id).orElseThrow(() -> new RuntimeException(String.format("User not found with %d",id)));
         userRepo.deleteById(id);
+
     }
 
     private UserDto convertEntityToDto(User user) {

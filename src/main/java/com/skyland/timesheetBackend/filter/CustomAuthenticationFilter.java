@@ -3,6 +3,7 @@ package com.skyland.timesheetBackend.filter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.skyland.timesheetBackend.manager.responseModel.BaseResponse;
 import com.skyland.timesheetBackend.manager.responseModel.ErrorInfo;
 import com.skyland.timesheetBackend.manager.responseModel.LoginSuccessResponse;
 import com.skyland.timesheetBackend.manager.responseModel.Token;
@@ -66,7 +67,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
 
-        ErrorInfo.BaseResponse baseResponse;
+        BaseResponse baseResponse;
 
         if(failed.getMessage() == USER_NOT_FOUND) {
            baseResponse = ResponseManager.getInstance().get_login_fail_response(user_not_found);

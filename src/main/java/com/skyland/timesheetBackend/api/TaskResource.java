@@ -1,14 +1,13 @@
 package com.skyland.timesheetBackend.api;
 
 import com.skyland.timesheetBackend.dto.TaskDto;
-import com.skyland.timesheetBackend.model.Task;
+import com.skyland.timesheetBackend.manager.ResponseManager;
+import com.skyland.timesheetBackend.manager.responseModel.BaseResponse;
 import com.skyland.timesheetBackend.service.task.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -36,7 +35,16 @@ public class TaskResource {
     }
 
     @DeleteMapping("task/delete/{id}")
-    public void deleteTask(@PathVariable("id") Long id) {
-        taskService.deleteTask(id);
+    public ResponseEntity<BaseResponse> deleteTask(@PathVariable("id") Long id) {
+        BaseResponse response = null;
+        try {
+            taskService.deleteTask(id);
+            response = ResponseManager.getInstance().get_base_response(ResponseManager.STATUS.deleted);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response = ResponseManager.getInstance().get_error_response_with_custom_message(e.getMessage());
+            return  ResponseEntity.ok(response);
+        }
+
     }
 }

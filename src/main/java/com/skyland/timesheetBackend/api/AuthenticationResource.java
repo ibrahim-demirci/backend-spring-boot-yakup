@@ -1,6 +1,7 @@
 package com.skyland.timesheetBackend.api;
 
 
+import com.skyland.timesheetBackend.manager.responseModel.BaseResponse;
 import com.skyland.timesheetBackend.manager.responseModel.ErrorInfo;
 import com.skyland.timesheetBackend.manager.responseModel.SignUpResponse;
 import com.skyland.timesheetBackend.manager.ResponseManager;
@@ -35,7 +36,7 @@ public class AuthenticationResource {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/authenticate/signup").toUriString());
         try {
             userService.saveUser(user);
-            ErrorInfo.BaseResponse base = ResponseManager.getInstance().get_base_response(created);
+            BaseResponse base = ResponseManager.getInstance().get_base_response(created);
             return ResponseEntity.created(uri).body(base);
 
         } catch (Exception e) {
@@ -44,7 +45,7 @@ public class AuthenticationResource {
                         new ErrorInfo(
                                 USERNAME_ALREADY_TAKEN,
                                 USERNAME_ALREADY_TAKEN_INFO );
-                ErrorInfo.BaseResponse base = ResponseManager.getInstance().get_base_response(failed);
+                BaseResponse base = ResponseManager.getInstance().get_base_response(failed);
                 return ResponseEntity.created(uri).body(base);
             }  else {
                 ErrorInfo errorInfo =

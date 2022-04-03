@@ -49,7 +49,7 @@ public class TaskService implements BaseTaskService {
     }
 
     @Override
-    public void deleteTask(Long id) {
+    public void deleteTask(Long id) throws RuntimeException{
         taskRepo.findById(id).orElseThrow(() -> new RuntimeException(String.format("Task not found with %d",id)));
         taskRepo.deleteById(id);
     }

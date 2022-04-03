@@ -9,6 +9,7 @@ import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.skyland.timesheetBackend.manager.responseModel.BaseResponse;
 import com.skyland.timesheetBackend.manager.responseModel.ErrorInfo;
 import com.skyland.timesheetBackend.manager.ResponseManager;
 import lombok.extern.slf4j.Slf4j;
@@ -61,7 +62,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
                 } catch (Exception error) {
                     log.error(error.getClass().toString());
-                    ErrorInfo.BaseResponse loginFailResponse = null;
+                    BaseResponse loginFailResponse = null;
                     ErrorInfo errorInfo;
                     
                     if(error instanceof TokenExpiredException) {
@@ -74,9 +75,10 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     } else if(error instanceof SignatureVerificationException) {
                         loginFailResponse = ResponseManager.getInstance().get_auth_error_response(signature_verification);
 
-                    }else if (error instanceof NestedServletException) {
-                        loginFailResponse = ResponseManager.getInstance().get_auth_error_response(unknown_error);
                     }
+//                    else if (error instanceof NestedServletException) {
+//                        loginFailResponse = ResponseManager.getInstance().get_auth_error_response(unknown_error);
+//                    }
                     
                     response.setStatus(FORBIDDEN.value());
                     response.setContentType(APPLICATION_JSON_VALUE);
