@@ -3,10 +3,10 @@ package com.skyland.timesheetBackend.filter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.skyland.timesheetBackend.api.responseModel.ErrorInfo;
-import com.skyland.timesheetBackend.filter.responseModel.LoginFailResponse;
-import com.skyland.timesheetBackend.filter.responseModel.LoginSuccessResponse;
-import com.skyland.timesheetBackend.filter.responseModel.Token;
+import com.skyland.timesheetBackend.manager.responseModel.ErrorInfo;
+import com.skyland.timesheetBackend.manager.responseModel.LoginSuccessResponse;
+import com.skyland.timesheetBackend.manager.responseModel.Token;
+import com.skyland.timesheetBackend.manager.ResponseManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,11 +24,8 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.stream.Collectors;
 
-
-import static com.skyland.timesheetBackend.constants.K.ErrorMessageInfo.*;
 import static com.skyland.timesheetBackend.constants.K.ErrorMessageType.*;
-import static com.skyland.timesheetBackend.constants.K.ResponseStatusUtilities.STATUS_FAILED;
-import static com.skyland.timesheetBackend.constants.K.ResponseStatusUtilities.STATUS_LOGIN;
+import static com.skyland.timesheetBackend.manager.ResponseManager.LOGIN_FAIL.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
@@ -57,13 +54,9 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         // LoginResponse when success login
         LoginSuccessResponse loginResponse =
-                new LoginSuccessResponse(
-                        true,
-                        STATUS_LOGIN,
-                        null,
+                ResponseManager.getInstance().get_login_success_response(
                         createTokens(user, request),
-                        user.getUsername()
-                );
+                        user.getUsername());
 
         response.setContentType(APPLICATION_JSON_VALUE);
         new ObjectMapper().writeValue(response.getOutputStream(), loginResponse);
@@ -73,36 +66,25 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
 
-        LoginFailResponse loginResponse;
+        ErrorInfo.BaseResponse baseResponse;
 
         if(failed.getMessage() == USER_NOT_FOUND) {
-            ErrorInfo errorInfo = new ErrorInfo(USER_NOT_FOUND, USER_NOT_FOUND_INFO);
-            loginResponse = createLoginFailResponse(errorInfo);
-
+           baseResponse = ResponseManager.getInstance().get_login_fail_response(user_not_found);
         } else if(failed.getMessage() == USER_NOT_VERIFIED){
-            ErrorInfo errorInfo = new ErrorInfo(USER_NOT_VERIFIED, USER_NOT_VERIFIED_INFO);
-            loginResponse = createLoginFailResponse(errorInfo);
+            baseResponse = ResponseManager.getInstance().get_login_fail_response(user_not_verified);
         } else {
-            ErrorInfo errorInfo = new ErrorInfo(USERNAME_OR_PASSWORD_WRONG, USERNAME_OR_PASSWORD_WRONG_INFO);
-            loginResponse = createLoginFailResponse(errorInfo);
+            baseResponse = ResponseManager.getInstance().get_login_fail_response(username_or_password_wrong);
         }
         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         response.setContentType(APPLICATION_JSON_VALUE);
 
         try {
-            new ObjectMapper().writeValue(response.getOutputStream(), loginResponse);
+            new ObjectMapper().writeValue(response.getOutputStream(), baseResponse);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private LoginFailResponse createLoginFailResponse(ErrorInfo error) {
-        return  new LoginFailResponse(
-                false,
-                STATUS_FAILED,
-                error
-        );
-    }
 
     private Token createTokens(User user, HttpServletRequest request ) {
         Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());

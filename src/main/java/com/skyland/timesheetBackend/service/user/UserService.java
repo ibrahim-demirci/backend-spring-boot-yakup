@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 import static com.skyland.timesheetBackend.constants.K.ErrorMessageType.*;
 
@@ -30,10 +31,8 @@ public class UserService implements BaseUserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepo.findByUsername(username);
-        if(user == null) {
-            throw new BadCredentialsException(USER_NOT_FOUND);
-        }
+        User user = userRepo.findByUsername(username).orElseThrow(() -> new BadCredentialsException(USER_NOT_FOUND));
+
         if (user.isVerified() == false) {
             throw new BadCredentialsException(USER_NOT_VERIFIED);
         }
@@ -48,8 +47,8 @@ public class UserService implements BaseUserService, UserDetailsService {
     @Override
     public User saveUser(User user) throws Exception{
         log.info(user.toString());
-        User findedUser = userRepo.findByUsername(user.getUsername());
-        if (findedUser != null) {
+        Optional<User> foundUser = userRepo.findByUsername(user.getUsername());
+        if (foundUser.isPresent()) {
             throw new Exception(USERNAME_ALREADY_TAKEN);
         } else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -62,13 +61,13 @@ public class UserService implements BaseUserService, UserDetailsService {
 
     @Override
     public UserDto getUserDtoByUsername(String username) {
-        User user = userRepo.findByUsername(username);
+        User user = userRepo.findByUsername(username).orElseThrow(() -> new RuntimeException(USER_NOT_FOUND));
         return convertEntityToDto(user) ;
     }
 
     @Override
     public User getUserByUsername(String username) {
-        return userRepo.findByUsername(username);
+        return userRepo.findByUsername(username).orElseThrow(() -> new RuntimeException(USER_NOT_FOUND)) ;
 
     }
 

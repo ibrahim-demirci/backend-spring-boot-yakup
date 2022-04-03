@@ -1,4 +1,4 @@
-package com.skyland.timesheetBackend.filter.responseModel;
+package com.skyland.timesheetBackend.manager.responseModel;
 
 import lombok.AllArgsConstructor;
 

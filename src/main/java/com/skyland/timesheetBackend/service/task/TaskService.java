@@ -43,20 +43,16 @@ public class TaskService implements BaseTaskService {
 
     @Override
     public void addUserToTask(String username, Long taskId) throws RuntimeException{
-        User user = userRepo.findByUsername(username);
-        Optional<Task> optionalTask = taskRepo.findById(taskId);
-        if(optionalTask.isPresent()) {
-            optionalTask.get().setUser(user);
-        } else {
-            throw new RuntimeException("task not found");
-        }
+        User user = userRepo.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found with " + username));
+        Task task = taskRepo.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found with " + String.valueOf(taskId)));
+        task.setUser(user);
     }
 
     @Override
     public void deleteTask(Long id) {
+        taskRepo.findById(id).orElseThrow(() -> new RuntimeException(String.format("Task not found with %d",id)));
         taskRepo.deleteById(id);
     }
-
 
     @Override
     public List<TaskDto> getTasksByUserId(Long userId) {

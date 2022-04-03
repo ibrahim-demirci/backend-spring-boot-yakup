@@ -28,23 +28,18 @@ public class AdminService implements BaseAdminService {
 
     @Override
     public UserDto verifyUser(String username) throws Exception {
-        User user = userRepo.findByUsername(username);
-        if (user == null) {
-            throw new Exception(USER_NOT_FOUND);
-        } else {
-            user.setVerified(true);
-            UserDto userDto = new UserDto();
-            userDto.setId(user.getId());
-            userDto.setName(user.getName());
-            userDto.setSurname(user.getSurname());
-            userDto.setJobTitle(user.getJobTitle());
-            userDto.setDescription(user.getDescription());
-            userDto.setEmail(user.getEmail());
-            userDto.setPhone(user.getPhone());
-            userDto.setVerified(user.isVerified());
-            return userDto;
-        }
-
+        User user = userRepo.findByUsername(username).orElseThrow(() -> new RuntimeException("User not fount with " + username));
+        user.setVerified(true);
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setName(user.getName());
+        userDto.setSurname(user.getSurname());
+        userDto.setJobTitle(user.getJobTitle());
+        userDto.setDescription(user.getDescription());
+        userDto.setEmail(user.getEmail());
+        userDto.setPhone(user.getPhone());
+        userDto.setVerified(user.isVerified());
+        return userDto;
     }
 
     private UserDto convertEntityToDto(User user) {

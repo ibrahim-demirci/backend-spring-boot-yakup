@@ -1,6 +1,5 @@
-package com.skyland.timesheetBackend.filter.responseModel;
+package com.skyland.timesheetBackend.manager.responseModel;
 
-import com.skyland.timesheetBackend.api.responseModel.ErrorInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
