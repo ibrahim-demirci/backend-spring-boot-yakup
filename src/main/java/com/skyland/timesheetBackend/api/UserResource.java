@@ -6,13 +6,13 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.skyland.timesheetBackend.dto.UserDto;
 import com.skyland.timesheetBackend.manager.ResponseManager;
 import com.skyland.timesheetBackend.manager.responseModel.BaseResponse;
 import com.skyland.timesheetBackend.model.Role;
 import com.skyland.timesheetBackend.model.User;
 import com.skyland.timesheetBackend.service.user.BaseUserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,10 +49,10 @@ public class UserResource {
                 Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(refresh_token);
-                String username = decodedJWT.getSubject();
-                User user = userService.getUserByUsername(username);
+                String email = decodedJWT.getSubject();
+                User user = userService.getUserByEmail(email);
                 String access_token = JWT.create()
-                        .withSubject(user.getUsername())
+                        .withSubject(user.getEmail())
                         .withExpiresAt(new java.sql.Date(System.currentTimeMillis() + 10 * 60 * 1000))
                         .withIssuer(request.getRequestURL().toString())
                         .withClaim("roles",user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
@@ -80,11 +80,23 @@ public class UserResource {
         }
     }
 
-    @DeleteMapping("/user/delete/{id}")
-    public ResponseEntity<?> deleteEmployee(@PathVariable("id") Long id) {
+    @GetMapping("/user/{code}")
+    public ResponseEntity<?> getUserByCode(@PathVariable("code") String code) {
         BaseResponse response = null;
         try {
-            userService.deleteUser(id);
+            UserDto user = userService.getUserDtoByCode(code);
+            return ResponseEntity.ok(user);
+        } catch (Exception e) {
+            response = ResponseManager.getInstance().get_error_response_with_custom_message(e.getMessage());
+            return  ResponseEntity.ok(response);
+        }
+    }
+
+    @DeleteMapping("/user/delete/{code}")
+    public ResponseEntity<?> deleteUserByCode(@PathVariable("code") String code) {
+        BaseResponse response = null;
+        try {
+            userService.deleteUserByCode(code);
             response = ResponseManager.getInstance().get_base_response(ResponseManager.STATUS.deleted);
             return ResponseEntity.ok(response);
         } catch (Exception e) {

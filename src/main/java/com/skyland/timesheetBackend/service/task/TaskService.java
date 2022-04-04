@@ -29,10 +29,6 @@ public class TaskService implements BaseTaskService {
        return taskRepo.save(task);
     }
 
-    @Override
-    public Task getTask(Long id) {
-        return null;
-    }
 
     @Override
     public List<TaskDto> getTasks() {
@@ -42,9 +38,9 @@ public class TaskService implements BaseTaskService {
     }
 
     @Override
-    public void addUserToTask(String username, Long taskId) throws RuntimeException{
-        User user = userRepo.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found with " + username));
-        Task task = taskRepo.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found with " + String.valueOf(taskId)));
+    public void addUserToTask(String email, Long taskId) throws RuntimeException{
+        User user = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found with " + email));
+        Task task = taskRepo.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found with " + taskId));
         task.setUser(user);
     }
 
@@ -70,7 +66,7 @@ public class TaskService implements BaseTaskService {
         taskDto.setTitle(task.getTitle());
         taskDto.setCreationDate(task.getCreationDate());
         taskDto.setPlannedFinishDate(task.getPlannedFinishDate());
-        taskDto.setUsername(task.getUser().getUsername());
+        taskDto.setEmail(task.getUser().getEmail());
         return taskDto;
     }
 }

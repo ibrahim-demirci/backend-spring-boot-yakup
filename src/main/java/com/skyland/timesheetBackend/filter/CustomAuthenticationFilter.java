@@ -3,8 +3,8 @@ package com.skyland.timesheetBackend.filter;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.skyland.timesheetBackend.constants.K;
 import com.skyland.timesheetBackend.manager.responseModel.BaseResponse;
-import com.skyland.timesheetBackend.manager.responseModel.ErrorInfo;
 import com.skyland.timesheetBackend.manager.responseModel.LoginSuccessResponse;
 import com.skyland.timesheetBackend.manager.responseModel.Token;
 import com.skyland.timesheetBackend.manager.ResponseManager;
@@ -25,8 +25,6 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.stream.Collectors;
 
-import static com.skyland.timesheetBackend.constants.K.ErrorMessageType.*;
-import static com.skyland.timesheetBackend.manager.ResponseManager.LOGIN_FAIL.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
@@ -41,9 +39,9 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String username = request.getParameter("username");
+        String username = request.getParameter("email");
         String password = request.getParameter("password");
-        log.info("Username is: {}", username);
+        log.info("Email is: {}", username);
         log.info("Password is: {}", password);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,password);
         return authenticationManager.authenticate(authenticationToken);
@@ -68,14 +66,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
 
         BaseResponse baseResponse;
-
-        if(failed.getMessage() == USER_NOT_FOUND) {
-           baseResponse = ResponseManager.getInstance().get_login_fail_response(user_not_found);
-        } else if(failed.getMessage() == USER_NOT_VERIFIED){
-            baseResponse = ResponseManager.getInstance().get_login_fail_response(user_not_verified);
+        if (failed.getMessage() == "Bad credentials") {
+            baseResponse = ResponseManager.getInstance().get_error_response_with_custom_message(K.ErrorMessageInfo.USERNAME_OR_PASSWORD_WRONG_INFO);
         } else {
-            baseResponse = ResponseManager.getInstance().get_login_fail_response(username_or_password_wrong);
+            baseResponse = ResponseManager.getInstance().get_error_response_with_custom_message(failed.getMessage());
         }
+
         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         response.setContentType(APPLICATION_JSON_VALUE);
 

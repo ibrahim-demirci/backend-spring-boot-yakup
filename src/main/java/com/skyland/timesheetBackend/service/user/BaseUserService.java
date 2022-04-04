@@ -5,7 +5,9 @@ import com.skyland.timesheetBackend.model.User;
 
 public interface BaseUserService {
     User saveUser(User user) throws Exception;
-    UserDto getUserDtoByUsername(String username);
-    User getUserByUsername(String username);
-    void deleteUser(Long id);
+    UserDto getUserDtoByEmail(String username);
+    UserDto getUserDtoByCode(String userCode);
+    User getUserByEmail(String email);
+//    User getUserById(Long id);
+    void deleteUserByCode(String  userCode);
 }

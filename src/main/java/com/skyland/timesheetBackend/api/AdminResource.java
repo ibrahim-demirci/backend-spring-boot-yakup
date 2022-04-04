@@ -21,15 +21,15 @@ public class AdminResource {
         return ResponseEntity.ok(adminService.getUsers());
     }
 
-    @PutMapping("/verify/{username}")
-    public ResponseEntity<BaseResponse> verifyUser(@PathVariable("username") String username) {
+    @PutMapping("/verify/{email}")
+    public ResponseEntity<BaseResponse> verifyUser(@PathVariable("email") String email) {
         BaseResponse baseResponse = null;
         try {
-            adminService.verifyUser(username);
+            adminService.verifyUser(email);
             baseResponse = ResponseManager.getInstance().get_base_response(ResponseManager.STATUS.updated);
             return ResponseEntity.ok(baseResponse);
         } catch (Exception e) {
-            baseResponse = ResponseManager.getInstance().get_base_response(ResponseManager.STATUS.failed);
+            baseResponse = ResponseManager.getInstance().get_error_response_with_custom_message(e.getMessage());
             return ResponseEntity.ok(baseResponse);
         }
 

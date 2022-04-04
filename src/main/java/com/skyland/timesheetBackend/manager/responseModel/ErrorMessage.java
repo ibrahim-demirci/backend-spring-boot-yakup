@@ -3,9 +3,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data @AllArgsConstructor
-public class ErrorInfo {
-    private String  type ;
-    private String  info;
-
-
+public class ErrorMessage {
+    private String  message;
 }

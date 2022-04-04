@@ -2,8 +2,6 @@ package com.skyland.timesheetBackend.api;
 
 
 import com.skyland.timesheetBackend.manager.responseModel.BaseResponse;
-import com.skyland.timesheetBackend.manager.responseModel.ErrorInfo;
-import com.skyland.timesheetBackend.manager.responseModel.SignUpResponse;
 import com.skyland.timesheetBackend.manager.ResponseManager;
 import com.skyland.timesheetBackend.model.User;
 import com.skyland.timesheetBackend.service.user.UserService;
@@ -17,11 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
-import static com.skyland.timesheetBackend.constants.K.ErrorMessageInfo.*;
-import static com.skyland.timesheetBackend.constants.K.ErrorMessageType.*;
-import static com.skyland.timesheetBackend.constants.K.ResponseStatusUtilities.*;
 import static com.skyland.timesheetBackend.manager.ResponseManager.STATUS.created;
-import static com.skyland.timesheetBackend.manager.ResponseManager.STATUS.failed;
 
 @RestController
 @RequestMapping("/api/authenticate") @RequiredArgsConstructor
@@ -40,21 +34,9 @@ public class AuthenticationResource {
             return ResponseEntity.created(uri).body(base);
 
         } catch (Exception e) {
-            if (e.getMessage() == USERNAME_ALREADY_TAKEN) {
-                ErrorInfo errorInfo =
-                        new ErrorInfo(
-                                USERNAME_ALREADY_TAKEN,
-                                USERNAME_ALREADY_TAKEN_INFO );
-                BaseResponse base = ResponseManager.getInstance().get_base_response(failed);
-                return ResponseEntity.created(uri).body(base);
-            }  else {
-                ErrorInfo errorInfo =
-                        new ErrorInfo(
-                                UNKNOWN_ERROR,
-                                UNKNOWN_ERROR_INFO );
-                SignUpResponse responseBody = new SignUpResponse(false, STATUS_FAILED, errorInfo );
-                return ResponseEntity.created(uri).body(responseBody);
-            }
+
+            BaseResponse base = ResponseManager.getInstance().get_error_response_with_custom_message(e.getMessage());
+            return ResponseEntity.created(uri).body(base);
         }
     }
 }

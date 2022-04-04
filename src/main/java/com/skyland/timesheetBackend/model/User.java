@@ -13,26 +13,26 @@ import java.util.Collection;
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(nullable = false, updatable = false)
+    private String userCode;
     private String name;
     private String surname;
     private String jobTitle;
     private String phone;
     private String description;
     private String email;
-    private String username;
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
     private boolean isVerified = false;
 
-    public User( String name, String surname, String jobTitle, String phone, String description, String email, String username, String password) {
+    public User( String name, String surname, String jobTitle, String phone, String description, String email, String password) {
         this.name = name;
         this.surname = surname;
         this.jobTitle = jobTitle;
         this.phone = phone;
         this.description = description;
         this.email = email;
-        this.username = username;
         this.password = password;
     }
 }

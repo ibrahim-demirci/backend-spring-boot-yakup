@@ -7,8 +7,8 @@ import lombok.Data;
 public class LoginSuccessResponse {
         private boolean success;
         private String status;
-        private ErrorInfo error = null;
+        private ErrorMessage error = null;
         private Token token;
-        private String username;
+        private String email;
 
 }

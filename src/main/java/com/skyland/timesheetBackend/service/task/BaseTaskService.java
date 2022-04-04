@@ -8,7 +8,6 @@ import java.util.List;
 public interface BaseTaskService {
 
     Task saveTask(Task task);
-    Task getTask(Long taskId);
     List<TaskDto> getTasks();
     public void addUserToTask(String  username, Long taskId);
     public void deleteTask(Long id);

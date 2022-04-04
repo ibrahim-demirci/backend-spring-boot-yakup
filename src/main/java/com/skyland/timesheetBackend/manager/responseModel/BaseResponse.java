@@ -8,5 +8,5 @@ import lombok.Data;
 public class BaseResponse {
     private boolean success;
     private String status;
-    private ErrorInfo error = null;
+    private ErrorMessage error = null;
 }

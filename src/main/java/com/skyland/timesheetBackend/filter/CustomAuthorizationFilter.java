@@ -10,14 +10,13 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skyland.timesheetBackend.manager.responseModel.BaseResponse;
-import com.skyland.timesheetBackend.manager.responseModel.ErrorInfo;
+import com.skyland.timesheetBackend.manager.responseModel.ErrorMessage;
 import com.skyland.timesheetBackend.manager.ResponseManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.util.NestedServletException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -63,7 +62,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 } catch (Exception error) {
                     log.error(error.getClass().toString());
                     BaseResponse loginFailResponse = null;
-                    ErrorInfo errorInfo;
+                    ErrorMessage errorInfo;
                     
                     if(error instanceof TokenExpiredException) {
                         loginFailResponse = ResponseManager.getInstance().get_auth_error_response(expired_token);
@@ -76,10 +75,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                         loginFailResponse = ResponseManager.getInstance().get_auth_error_response(signature_verification);
 
                     }
-//                    else if (error instanceof NestedServletException) {
-//                        loginFailResponse = ResponseManager.getInstance().get_auth_error_response(unknown_error);
-//                    }
-                    
+
                     response.setStatus(FORBIDDEN.value());
                     response.setContentType(APPLICATION_JSON_VALUE);
                     new ObjectMapper().writeValue(response.getOutputStream(), loginFailResponse);

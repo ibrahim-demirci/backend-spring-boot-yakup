@@ -1,15 +1,12 @@
 package com.skyland.timesheetBackend.manager;
 
 import com.skyland.timesheetBackend.manager.responseModel.BaseResponse;
-import com.skyland.timesheetBackend.manager.responseModel.ErrorInfo;
+import com.skyland.timesheetBackend.manager.responseModel.ErrorMessage;
 import com.skyland.timesheetBackend.constants.K;
 import com.skyland.timesheetBackend.manager.responseModel.LoginSuccessResponse;
 import com.skyland.timesheetBackend.manager.responseModel.Token;
 
-import javax.lang.model.type.ErrorType;
-
 import static com.skyland.timesheetBackend.constants.K.ErrorMessageInfo.*;
-import static com.skyland.timesheetBackend.constants.K.ErrorMessageType.*;
 import static com.skyland.timesheetBackend.constants.K.ResponseStatusUtilities.*;
 
 public class ResponseManager {
@@ -33,7 +30,6 @@ public class ResponseManager {
         created,
         updated,
         deleted,
-        failed
     }
 
     public enum LOGIN_FAIL {
@@ -48,44 +44,44 @@ public class ResponseManager {
         return loginSuccessResponse;
     }
 
-    public BaseResponse get_login_fail_response(LOGIN_FAIL login_fail) {
-        BaseResponse baseResponse = null;
-        ErrorInfo errorInfo = null;
-
-        switch (login_fail) {
-            case user_not_found:
-                errorInfo = new ErrorInfo(USER_NOT_FOUND, USER_NOT_FOUND_INFO);
-                break;
-            case user_not_verified:
-                errorInfo = new ErrorInfo(USER_NOT_VERIFIED, USER_NOT_VERIFIED_INFO);
-                break;
-            case username_or_password_wrong:
-                errorInfo = new ErrorInfo(USERNAME_OR_PASSWORD_WRONG, USERNAME_OR_PASSWORD_WRONG_INFO);
-                break;
-        }
-        baseResponse = new BaseResponse(false, STATUS_FAILED, errorInfo);
-        return baseResponse;
-    }
+//    public BaseResponse get_login_fail_response(LOGIN_FAIL login_fail) {
+//        BaseResponse baseResponse = null;
+//        ErrorInfo errorInfo = null;
+//
+//        switch (login_fail) {
+//            case user_not_found:
+//                errorInfo = new ErrorInfo(USER_NOT_FOUND_INFO);
+//                break;
+//            case user_not_verified:
+//                errorInfo = new ErrorInfo(USER_NOT_VERIFIED_INFO);
+//                break;
+//            case username_or_password_wrong:
+//                errorInfo = new ErrorInfo(USERNAME_OR_PASSWORD_WRONG_INFO);
+//                break;
+//        }
+//        baseResponse = new BaseResponse(false, STATUS_FAILED, errorInfo);
+//        return baseResponse;
+//    }
 
     public BaseResponse get_auth_error_response(AUTH_ERROR error) {
-        ErrorInfo errorInfo = null;
+        ErrorMessage errorInfo = null;
         BaseResponse loginFailResponse = null;
 
         switch (error) {
             case expired_token:
-                errorInfo = new ErrorInfo(ACCESS_TOKEN_EXPIRED, ACCESS_TOKEN_EXPIRED_INFO);
+                errorInfo = new ErrorMessage(ACCESS_TOKEN_EXPIRED_INFO);
                 break;
             case invalid_token:
-                errorInfo = new ErrorInfo(INVALID_TOKEN, INVALID_TOKEN_INFO);
+                errorInfo = new ErrorMessage( INVALID_TOKEN_INFO);
                 break;
             case signature_verification:
-                errorInfo = new ErrorInfo(SIGNATURE_VERIFICATION, SIGNATURE_VERIFICATION_INFO);
+                errorInfo = new ErrorMessage( SIGNATURE_VERIFICATION_INFO);
                 break;
             case unknown_error:
-                errorInfo = new ErrorInfo(UNKNOWN_ERROR, UNKNOWN_ERROR_INFO);
+                errorInfo = new ErrorMessage(UNKNOWN_ERROR_INFO);
                 break;
             default:
-                errorInfo = new ErrorInfo(K.ErrorMessageType.UNKNOWN_ERROR, UNKNOWN_ERROR_INFO);
+                errorInfo = new ErrorMessage(UNKNOWN_ERROR_INFO);
         }
 
         loginFailResponse = new BaseResponse(false, K.ResponseStatusUtilities.STATUS_FAILED,errorInfo);
@@ -104,17 +100,13 @@ public class ResponseManager {
             case updated:
                 baseResponse = new BaseResponse(true, STATUS_UPDATED,null);
                 break;
-            case failed:
-                ErrorInfo errorInfo = new ErrorInfo(USER_NOT_FOUND, USER_NOT_FOUND_INFO);
-                baseResponse = new BaseResponse(false,STATUS_FAILED,errorInfo);
-                break;
         }
         return baseResponse;
     }
 
     public BaseResponse get_error_response_with_custom_message(String message) {
         BaseResponse baseResponse = null;
-        ErrorInfo errorInfo = new ErrorInfo(UNKNOWN_ERROR, message);
+        ErrorMessage errorInfo = new ErrorMessage(message);
         return new BaseResponse(false, STATUS_FAILED, errorInfo);
     }
 

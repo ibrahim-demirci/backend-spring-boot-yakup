@@ -1,6 +1,7 @@
 package com.skyland.timesheetBackend.service.role;
 
 
+import com.skyland.timesheetBackend.constants.K;
 import com.skyland.timesheetBackend.model.Role;
 import com.skyland.timesheetBackend.model.User;
 import com.skyland.timesheetBackend.repo.RoleRepo;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
-import static com.skyland.timesheetBackend.constants.K.ErrorMessageType.USER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -29,9 +29,9 @@ public class RoleService implements BaseRoleService {
     }
 
     @Override
-    public void addRoleToUser(String username, String roleName) {
-        log.info("Adding role {} to user {} ", roleName,username);
-        User user = userRepo.findByUsername(username).orElseThrow(() -> new RuntimeException(USER_NOT_FOUND));
+    public void addRoleToUser(String email, String roleName) {
+        log.info("Adding role {} to user {} ", roleName,email);
+        User user = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException(K.ErrorMessageInfo.USER_NOT_FOUND_INFO));
         Role role = roleRepo.findByName(roleName);
         user.getRoles().add(role);
     }

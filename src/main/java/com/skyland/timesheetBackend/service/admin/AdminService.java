@@ -10,8 +10,6 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.skyland.timesheetBackend.constants.K.ErrorMessageType.USER_NOT_FOUND;
-
 
 @Service @RequiredArgsConstructor @Transactional
 public class AdminService implements BaseAdminService {
@@ -25,10 +23,9 @@ public class AdminService implements BaseAdminService {
                 .map(this::convertEntityToDto)
                 .collect(Collectors.toList());
     }
-
     @Override
-    public UserDto verifyUser(String username) throws Exception {
-        User user = userRepo.findByUsername(username).orElseThrow(() -> new RuntimeException("User not fount with " + username));
+    public UserDto verifyUser(String email) throws Exception {
+        User user = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not fount with " + email));
         user.setVerified(true);
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
@@ -51,6 +48,7 @@ public class AdminService implements BaseAdminService {
         userDto.setDescription(user.getDescription());
         userDto.setEmail(user.getEmail());
         userDto.setPhone(user.getPhone());
+        userDto.setUserCode(user.getUserCode());
         userDto.setVerified(user.isVerified());
         return userDto;
     }
