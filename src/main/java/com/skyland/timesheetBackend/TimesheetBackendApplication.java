@@ -47,8 +47,8 @@ public class TimesheetBackendApplication {
             taskService.saveTask(new Task(null, "title2", "describtion2", null, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis())));
 
 
-            taskService.addUserToTask("jim@gmail.com", Long.valueOf(7));
-            taskService.addUserToTask("jim@gmail.com", Long.valueOf(8));
+            taskService.addUserToTask("jim@gmail.com", 7L);
+            taskService.addUserToTask("jim@gmail.com", 8L);
 
             taskService.getTasksByUserId(Long.valueOf(5));
 

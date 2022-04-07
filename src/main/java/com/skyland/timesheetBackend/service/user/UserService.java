@@ -1,6 +1,6 @@
 package com.skyland.timesheetBackend.service.user;
 
-import com.skyland.timesheetBackend.constants.K;
+import com.skyland.timesheetBackend.constants.ErrorMessageInfo;
 import com.skyland.timesheetBackend.dto.UserDto;
 import com.skyland.timesheetBackend.model.User;
 import com.skyland.timesheetBackend.repo.UserRepo;
@@ -33,10 +33,10 @@ public class UserService implements BaseUserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepo.findByEmail(email).orElseThrow(() -> new BadCredentialsException(K.ErrorMessageInfo.USER_NOT_FOUND_INFO + email));
+        User user = userRepo.findByEmail(email).orElseThrow(() -> new BadCredentialsException(ErrorMessageInfo.USER_NOT_FOUND_INFO + email));
 
-        if (user.isVerified() == false) {
-            throw new BadCredentialsException(K.ErrorMessageInfo.USER_NOT_VERIFIED_INFO);
+        if (!user.isVerified()) {
+            throw new BadCredentialsException(ErrorMessageInfo.USER_NOT_VERIFIED_INFO);
         }
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
@@ -52,9 +52,9 @@ public class UserService implements BaseUserService, UserDetailsService {
         Optional<User> emailControlUser = userRepo.findByEmail(user.getEmail());
         Optional<User> phoneControlUser = userRepo.findByPhone(user.getPhone());
         if (emailControlUser.isPresent()) {
-            throw new RuntimeException(K.ErrorMessageInfo.EMAIL_ALREADY_TAKEN_INFO);
+            throw new RuntimeException(ErrorMessageInfo.EMAIL_ALREADY_TAKEN_INFO);
         } else if (phoneControlUser.isPresent()) {
-            throw new RuntimeException(K.ErrorMessageInfo.PHONE_ALREADY_USING);
+            throw new RuntimeException(ErrorMessageInfo.PHONE_ALREADY_USING);
         } else {
             user.setUserCode(UUID.randomUUID().toString());
             user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -66,26 +66,25 @@ public class UserService implements BaseUserService, UserDetailsService {
 
     @Override
     public UserDto getUserDtoByEmail(String email) {
-        User user = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException(K.ErrorMessageInfo.USER_NOT_FOUND_INFO));
+        User user = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException(ErrorMessageInfo.USER_NOT_FOUND_INFO));
         return convertEntityToDto(user);
     }
 
     @Override
     public UserDto getUserDtoByCode(String userCode) {
-        User user = userRepo.findByUserCode(userCode).orElseThrow(() -> new RuntimeException(K.ErrorMessageInfo.USER_NOT_FOUND_INFO));
+        User user = userRepo.findByUserCode(userCode).orElseThrow(() -> new RuntimeException(ErrorMessageInfo.USER_NOT_FOUND_INFO));
         return convertEntityToDto(user);
     }
 
     @Override
     public void deleteUserByCode(String userCode) {
-        User user = userRepo.findByUserCode(userCode).orElseThrow(() -> new RuntimeException(K.ErrorMessageInfo.USER_NOT_FOUND_INFO + userCode));
+        User user = userRepo.findByUserCode(userCode).orElseThrow(() -> new RuntimeException(ErrorMessageInfo.USER_NOT_FOUND_INFO + userCode));
         userRepo.deleteById(user.getId());
     }
 
     @Override
     public User getUserByEmail(String email) {
-        User user = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException(K.ErrorMessageInfo.USER_NOT_FOUND_INFO));
-        return user;
+        return userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException(ErrorMessageInfo.USER_NOT_FOUND_INFO));
     }
 
 //    @Override

@@ -4,6 +4,6 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class Token {
-    public String access_token;
-    public String refresh_token;
+    public String accessToken;
+    public String refreshToken;
 }

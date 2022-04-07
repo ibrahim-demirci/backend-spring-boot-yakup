@@ -37,6 +37,8 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        BaseResponse loginFailResponse = null;
+
         if (request.getServletContext().equals("api/token/refresh")) {
             filterChain.doFilter(request, response);
         } else {
@@ -48,34 +50,30 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                     JWTVerifier verifier = JWT.require(algorithm).build();
                     DecodedJWT decodedJWT = verifier.verify(token);
-                    String username = decodedJWT.getSubject();
+                    String email = decodedJWT.getSubject();
                     String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
                     Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
                     stream(roles).forEach(role -> {
                         authorities.add(new SimpleGrantedAuthority(role));
                     });
 
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                     filterChain.doFilter(request, response);
 
-                } catch (Exception error) {
-                    log.error(error.getClass().toString());
-                    BaseResponse loginFailResponse = null;
-                    ErrorMessage errorInfo;
+                } catch (TokenExpiredException e) {
+                    loginFailResponse = ResponseManager.getInstance().get_auth_error_response(expired_token);
 
-                    if (error instanceof TokenExpiredException) {
-                        loginFailResponse = ResponseManager.getInstance().get_auth_error_response(expired_token);
+                } catch (JWTDecodeException e) {
+                    loginFailResponse = ResponseManager.getInstance().get_auth_error_response(invalid_token);
 
-                    } else if (error instanceof JWTDecodeException) {
+                } catch (SignatureVerificationException e) {
+                    loginFailResponse = ResponseManager.getInstance().get_auth_error_response(signature_verification);
 
-                        loginFailResponse = ResponseManager.getInstance().get_auth_error_response(invalid_token);
-
-                    } else if (error instanceof SignatureVerificationException) {
-                        loginFailResponse = ResponseManager.getInstance().get_auth_error_response(signature_verification);
-
-                    }
-
+                } catch (Exception e) {
+                    loginFailResponse = ResponseManager.getInstance().get_error_response_with_custom_message(e.getMessage());
+                    
+                } finally {
                     response.setStatus(FORBIDDEN.value());
                     response.setContentType(APPLICATION_JSON_VALUE);
                     new ObjectMapper().writeValue(response.getOutputStream(), loginFailResponse);

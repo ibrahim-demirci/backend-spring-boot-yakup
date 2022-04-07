@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skyland.timesheetBackend.dto.UserDto;
 import com.skyland.timesheetBackend.manager.ResponseManager;
 import com.skyland.timesheetBackend.manager.responseModel.BaseResponse;
+import com.skyland.timesheetBackend.manager.responseModel.Token;
 import com.skyland.timesheetBackend.model.Role;
 import com.skyland.timesheetBackend.model.User;
 import com.skyland.timesheetBackend.service.user.BaseUserService;
@@ -19,8 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.Date;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -41,41 +41,40 @@ public class UserResource {
 //    }
 
     @GetMapping("/token/refresh")
-    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
 
             try {
-                String refresh_token = authorizationHeader.substring("Bearer ".length());
+                String refreshToken = authorizationHeader.substring("Bearer ".length());
                 Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
-                DecodedJWT decodedJWT = verifier.verify(refresh_token);
+                DecodedJWT decodedJWT = verifier.verify(refreshToken);
                 String email = decodedJWT.getSubject();
                 User user = userService.getUserByEmail(email);
-                String access_token = JWT.create()
+                String accessToken = JWT.create()
                         .withSubject(user.getEmail())
-                        .withExpiresAt(new java.sql.Date(System.currentTimeMillis() + 10 * 60 * 1000))
+                        .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                         .withIssuer(request.getRequestURL().toString())
                         .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
                         .sign(algorithm);
 
-                Map<String, String> tokens = new HashMap<>();
-                tokens.put("access_token", access_token);
-                tokens.put("refresh_token", refresh_token);
+                Token token = new Token(accessToken, refreshToken);
                 response.setContentType(APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+                new ObjectMapper().writeValue(response.getOutputStream(), token);
 
             } catch (Exception e) {
-                response.setHeader("error", e.getMessage());
                 response.setStatus(FORBIDDEN.value());
-//                    response.sendError(FORBIDDEN.value());
-                Map<String, String> error = new HashMap<>();
-                error.put("error_message", e.getMessage());
                 response.setContentType(APPLICATION_JSON_VALUE);
-                new ObjectMapper().writeValue(response.getOutputStream(), error);
-            }
+                BaseResponse baseResponse = ResponseManager.getInstance().get_error_response_with_custom_message(e.getMessage());
 
+                try {
+                    new ObjectMapper().writeValue(response.getOutputStream(), baseResponse);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
 
         } else {
             throw new RuntimeException("Refresh token is missing");

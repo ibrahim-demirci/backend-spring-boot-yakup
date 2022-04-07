@@ -1,13 +1,13 @@
 package com.skyland.timesheetBackend.manager;
 
-import com.skyland.timesheetBackend.constants.K;
+import com.skyland.timesheetBackend.constants.ResponseStatusUtilities;
 import com.skyland.timesheetBackend.manager.responseModel.BaseResponse;
 import com.skyland.timesheetBackend.manager.responseModel.ErrorMessage;
 import com.skyland.timesheetBackend.manager.responseModel.LoginSuccessResponse;
 import com.skyland.timesheetBackend.manager.responseModel.Token;
 
-import static com.skyland.timesheetBackend.constants.K.ErrorMessageInfo.*;
-import static com.skyland.timesheetBackend.constants.K.ResponseStatusUtilities.*;
+import static com.skyland.timesheetBackend.constants.ErrorMessageInfo.*;
+import static com.skyland.timesheetBackend.constants.ResponseStatusUtilities.*;
 
 public class ResponseManager {
 
@@ -32,12 +32,6 @@ public class ResponseManager {
         created,
         updated,
         deleted,
-    }
-
-    public enum LOGIN_FAIL {
-        user_not_found,
-        user_not_verified,
-        username_or_password_wrong
     }
 
     public LoginSuccessResponse get_login_success_response(Token token, String username) {
@@ -86,7 +80,7 @@ public class ResponseManager {
                 errorInfo = new ErrorMessage(UNKNOWN_ERROR_INFO);
         }
 
-        loginFailResponse = new BaseResponse(false, K.ResponseStatusUtilities.STATUS_FAILED, errorInfo);
+        loginFailResponse = new BaseResponse(false, ResponseStatusUtilities.STATUS_FAILED, errorInfo);
         return loginFailResponse;
     }
 
@@ -111,6 +105,4 @@ public class ResponseManager {
         ErrorMessage errorInfo = new ErrorMessage(message);
         return new BaseResponse(false, STATUS_FAILED, errorInfo);
     }
-
-
 }

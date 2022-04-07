@@ -5,7 +5,7 @@ import com.skyland.timesheetBackend.model.Task;
 
 import java.util.List;
 
-public interface BaseTaskService {
+interface BaseTaskService {
 
     Task saveTask(Task task);
 
