@@ -27,10 +27,10 @@ public class AdminResource {
         BaseResponse baseResponse = null;
         try {
             adminService.verifyUser(email);
-            baseResponse = ResponseManager.getInstance().get_base_response(ResponseManager.STATUS.updated);
+            baseResponse = ResponseManager.getInstance().getBaseResponse(ResponseManager.STATUS.updated);
             return ResponseEntity.ok(baseResponse);
         } catch (Exception e) {
-            baseResponse = ResponseManager.getInstance().get_error_response_with_custom_message(e.getMessage());
+            baseResponse = ResponseManager.getInstance().getErrorResponseWithCustomMessage(e.getMessage());
             return ResponseEntity.ok(baseResponse);
         }
 

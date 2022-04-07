@@ -54,7 +54,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         // LoginResponse when success login
         LoginSuccessResponse loginResponse =
-                ResponseManager.getInstance().get_login_success_response(
+                ResponseManager.getInstance().getLoginSuccessResponse(
                         createTokens(user, request),
                         user.getUsername());
 
@@ -68,9 +68,9 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         BaseResponse baseResponse;
         if (failed.getMessage().equals("Bad credentials")) {
-            baseResponse = ResponseManager.getInstance().get_error_response_with_custom_message(ErrorMessageInfo.USERNAME_OR_PASSWORD_WRONG_INFO);
+            baseResponse = ResponseManager.getInstance().getErrorResponseWithCustomMessage(ErrorMessageInfo.USERNAME_OR_PASSWORD_WRONG_INFO);
         } else {
-            baseResponse = ResponseManager.getInstance().get_error_response_with_custom_message(failed.getMessage());
+            baseResponse = ResponseManager.getInstance().getErrorResponseWithCustomMessage(failed.getMessage());
         }
 
         response.setStatus(HttpServletResponse.SC_NOT_FOUND);

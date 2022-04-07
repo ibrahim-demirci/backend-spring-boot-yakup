@@ -32,12 +32,12 @@ public class AuthenticationResource {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/authenticate/signup").toUriString());
         try {
             userService.saveUser(user);
-            BaseResponse base = ResponseManager.getInstance().get_base_response(created);
+            BaseResponse base = ResponseManager.getInstance().getBaseResponse(created);
             return ResponseEntity.created(uri).body(base);
 
         } catch (Exception e) {
 
-            BaseResponse base = ResponseManager.getInstance().get_error_response_with_custom_message(e.getMessage());
+            BaseResponse base = ResponseManager.getInstance().getErrorResponseWithCustomMessage(e.getMessage());
             return ResponseEntity.created(uri).body(base);
         }
     }

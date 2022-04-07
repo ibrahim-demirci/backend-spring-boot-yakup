@@ -11,7 +11,6 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skyland.timesheetBackend.manager.ResponseManager;
 import com.skyland.timesheetBackend.manager.responseModel.BaseResponse;
-import com.skyland.timesheetBackend.manager.responseModel.ErrorMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,7 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import static com.skyland.timesheetBackend.manager.ResponseManager.AUTH_ERROR.*;
+import static com.skyland.timesheetBackend.manager.commonEnum.AuthError.*;
 import static java.util.Arrays.stream;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -39,7 +38,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         BaseResponse loginFailResponse = null;
 
-        if (request.getServletContext().equals("api/token/refresh")) {
+        if (request.getServletContext().toString().equals("api/token/refresh")) {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
@@ -62,16 +61,16 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     filterChain.doFilter(request, response);
 
                 } catch (TokenExpiredException e) {
-                    loginFailResponse = ResponseManager.getInstance().get_auth_error_response(expired_token);
+                    loginFailResponse = ResponseManager.getInstance().getAuthErrorResponse(expired_token);
 
                 } catch (JWTDecodeException e) {
-                    loginFailResponse = ResponseManager.getInstance().get_auth_error_response(invalid_token);
+                    loginFailResponse = ResponseManager.getInstance().getAuthErrorResponse(invalid_token);
 
                 } catch (SignatureVerificationException e) {
-                    loginFailResponse = ResponseManager.getInstance().get_auth_error_response(signature_verification);
+                    loginFailResponse = ResponseManager.getInstance().getAuthErrorResponse(signature_verification);
 
                 } catch (Exception e) {
-                    loginFailResponse = ResponseManager.getInstance().get_error_response_with_custom_message(e.getMessage());
+                    loginFailResponse = ResponseManager.getInstance().getErrorResponseWithCustomMessage(e.getMessage());
                     
                 } finally {
                     response.setStatus(FORBIDDEN.value());

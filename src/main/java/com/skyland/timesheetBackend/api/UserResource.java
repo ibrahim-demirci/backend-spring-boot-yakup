@@ -67,7 +67,7 @@ public class UserResource {
             } catch (Exception e) {
                 response.setStatus(FORBIDDEN.value());
                 response.setContentType(APPLICATION_JSON_VALUE);
-                BaseResponse baseResponse = ResponseManager.getInstance().get_error_response_with_custom_message(e.getMessage());
+                BaseResponse baseResponse = ResponseManager.getInstance().getErrorResponseWithCustomMessage(e.getMessage());
 
                 try {
                     new ObjectMapper().writeValue(response.getOutputStream(), baseResponse);
@@ -88,7 +88,7 @@ public class UserResource {
             UserDto user = userService.getUserDtoByCode(code);
             return ResponseEntity.ok(user);
         } catch (Exception e) {
-            response = ResponseManager.getInstance().get_error_response_with_custom_message(e.getMessage());
+            response = ResponseManager.getInstance().getErrorResponseWithCustomMessage(e.getMessage());
             return ResponseEntity.ok(response);
         }
     }
@@ -98,10 +98,10 @@ public class UserResource {
         BaseResponse response = null;
         try {
             userService.deleteUserByCode(code);
-            response = ResponseManager.getInstance().get_base_response(ResponseManager.STATUS.deleted);
+            response = ResponseManager.getInstance().getBaseResponse(ResponseManager.STATUS.deleted);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            response = ResponseManager.getInstance().get_error_response_with_custom_message(e.getMessage());
+            response = ResponseManager.getInstance().getErrorResponseWithCustomMessage(e.getMessage());
             return ResponseEntity.ok(response);
         }
     }

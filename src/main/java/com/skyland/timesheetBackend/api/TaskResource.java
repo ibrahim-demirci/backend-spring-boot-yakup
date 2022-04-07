@@ -40,10 +40,10 @@ public class TaskResource {
         BaseResponse response = null;
         try {
             taskService.deleteTask(id);
-            response = ResponseManager.getInstance().get_base_response(ResponseManager.STATUS.deleted);
+            response = ResponseManager.getInstance().getBaseResponse(ResponseManager.STATUS.deleted);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            response = ResponseManager.getInstance().get_error_response_with_custom_message(e.getMessage());
+            response = ResponseManager.getInstance().getErrorResponseWithCustomMessage(e.getMessage());
             return ResponseEntity.ok(response);
         }
 

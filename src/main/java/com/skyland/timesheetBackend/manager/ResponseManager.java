@@ -1,6 +1,7 @@
 package com.skyland.timesheetBackend.manager;
 
 import com.skyland.timesheetBackend.constants.ResponseStatusUtilities;
+import com.skyland.timesheetBackend.manager.commonEnum.AuthError;
 import com.skyland.timesheetBackend.manager.responseModel.BaseResponse;
 import com.skyland.timesheetBackend.manager.responseModel.ErrorMessage;
 import com.skyland.timesheetBackend.manager.responseModel.LoginSuccessResponse;
@@ -21,20 +22,13 @@ public class ResponseManager {
         return instance;
     }
 
-    public enum AUTH_ERROR {
-        expired_token,
-        invalid_token,
-        signature_verification,
-        unknown_error,
-    }
-
     public enum STATUS {
         created,
         updated,
         deleted,
     }
 
-    public LoginSuccessResponse get_login_success_response(Token token, String username) {
+    public LoginSuccessResponse getLoginSuccessResponse(Token token, String username) {
         LoginSuccessResponse loginSuccessResponse = null;
         loginSuccessResponse = new LoginSuccessResponse(true, STATUS_LOGIN, null, token, username);
         return loginSuccessResponse;
@@ -59,7 +53,7 @@ public class ResponseManager {
 //        return baseResponse;
 //    }
 
-    public BaseResponse get_auth_error_response(AUTH_ERROR error) {
+    public BaseResponse getAuthErrorResponse(AuthError error) {
         ErrorMessage errorInfo = null;
         BaseResponse loginFailResponse = null;
 
@@ -73,9 +67,6 @@ public class ResponseManager {
             case signature_verification:
                 errorInfo = new ErrorMessage(SIGNATURE_VERIFICATION_INFO);
                 break;
-            case unknown_error:
-                errorInfo = new ErrorMessage(UNKNOWN_ERROR_INFO);
-                break;
             default:
                 errorInfo = new ErrorMessage(UNKNOWN_ERROR_INFO);
         }
@@ -84,7 +75,7 @@ public class ResponseManager {
         return loginFailResponse;
     }
 
-    public BaseResponse get_base_response(STATUS success) {
+    public BaseResponse getBaseResponse(STATUS success) {
         BaseResponse baseResponse = null;
         switch (success) {
             case created:
@@ -100,8 +91,7 @@ public class ResponseManager {
         return baseResponse;
     }
 
-    public BaseResponse get_error_response_with_custom_message(String message) {
-        BaseResponse baseResponse = null;
+    public BaseResponse getErrorResponseWithCustomMessage(String message) {
         ErrorMessage errorInfo = new ErrorMessage(message);
         return new BaseResponse(false, STATUS_FAILED, errorInfo);
     }
