@@ -1,8 +1,8 @@
 package com.skyland.timesheetBackend.api;
 
 
-import com.skyland.timesheetBackend.manager.responseModel.BaseResponse;
 import com.skyland.timesheetBackend.manager.ResponseManager;
+import com.skyland.timesheetBackend.manager.responseModel.BaseResponse;
 import com.skyland.timesheetBackend.model.User;
 import com.skyland.timesheetBackend.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import java.net.URI;
 
 import static com.skyland.timesheetBackend.manager.ResponseManager.STATUS.created;
 
 @RestController
-@RequestMapping("/api/authenticate") @RequiredArgsConstructor
+@RequestMapping("/api/authenticate")
+@RequiredArgsConstructor
 @Slf4j
 
 public class AuthenticationResource {

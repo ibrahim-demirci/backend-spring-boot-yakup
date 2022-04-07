@@ -1,8 +1,8 @@
 package com.skyland.timesheetBackend.manager;
 
+import com.skyland.timesheetBackend.constants.K;
 import com.skyland.timesheetBackend.manager.responseModel.BaseResponse;
 import com.skyland.timesheetBackend.manager.responseModel.ErrorMessage;
-import com.skyland.timesheetBackend.constants.K;
 import com.skyland.timesheetBackend.manager.responseModel.LoginSuccessResponse;
 import com.skyland.timesheetBackend.manager.responseModel.Token;
 
@@ -14,8 +14,10 @@ public class ResponseManager {
     private static final ResponseManager instance = new ResponseManager();
 
     //private constructor to avoid client applications to use constructor
-    private ResponseManager(){}
-    public static ResponseManager getInstance(){
+    private ResponseManager() {
+    }
+
+    public static ResponseManager getInstance() {
         return instance;
     }
 
@@ -40,7 +42,7 @@ public class ResponseManager {
 
     public LoginSuccessResponse get_login_success_response(Token token, String username) {
         LoginSuccessResponse loginSuccessResponse = null;
-        loginSuccessResponse = new LoginSuccessResponse(true, STATUS_LOGIN,null, token, username);
+        loginSuccessResponse = new LoginSuccessResponse(true, STATUS_LOGIN, null, token, username);
         return loginSuccessResponse;
     }
 
@@ -72,10 +74,10 @@ public class ResponseManager {
                 errorInfo = new ErrorMessage(ACCESS_TOKEN_EXPIRED_INFO);
                 break;
             case invalid_token:
-                errorInfo = new ErrorMessage( INVALID_TOKEN_INFO);
+                errorInfo = new ErrorMessage(INVALID_TOKEN_INFO);
                 break;
             case signature_verification:
-                errorInfo = new ErrorMessage( SIGNATURE_VERIFICATION_INFO);
+                errorInfo = new ErrorMessage(SIGNATURE_VERIFICATION_INFO);
                 break;
             case unknown_error:
                 errorInfo = new ErrorMessage(UNKNOWN_ERROR_INFO);
@@ -84,7 +86,7 @@ public class ResponseManager {
                 errorInfo = new ErrorMessage(UNKNOWN_ERROR_INFO);
         }
 
-        loginFailResponse = new BaseResponse(false, K.ResponseStatusUtilities.STATUS_FAILED,errorInfo);
+        loginFailResponse = new BaseResponse(false, K.ResponseStatusUtilities.STATUS_FAILED, errorInfo);
         return loginFailResponse;
     }
 
@@ -92,13 +94,13 @@ public class ResponseManager {
         BaseResponse baseResponse = null;
         switch (success) {
             case created:
-                baseResponse = new BaseResponse(true, STATUS_CREATED,null);
+                baseResponse = new BaseResponse(true, STATUS_CREATED, null);
                 break;
             case deleted:
-                baseResponse = new BaseResponse(true, STATUS_DELETED,null);
+                baseResponse = new BaseResponse(true, STATUS_DELETED, null);
                 break;
             case updated:
-                baseResponse = new BaseResponse(true, STATUS_UPDATED,null);
+                baseResponse = new BaseResponse(true, STATUS_UPDATED, null);
                 break;
         }
         return baseResponse;

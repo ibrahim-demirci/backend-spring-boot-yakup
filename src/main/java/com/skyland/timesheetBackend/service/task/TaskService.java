@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,7 +25,7 @@ public class TaskService implements BaseTaskService {
 
     @Override
     public Task saveTask(Task task) {
-       return taskRepo.save(task);
+        return taskRepo.save(task);
     }
 
 
@@ -38,15 +37,15 @@ public class TaskService implements BaseTaskService {
     }
 
     @Override
-    public void addUserToTask(String email, Long taskId) throws RuntimeException{
+    public void addUserToTask(String email, Long taskId) throws RuntimeException {
         User user = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found with " + email));
         Task task = taskRepo.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found with " + taskId));
         task.setUser(user);
     }
 
     @Override
-    public void deleteTask(Long id) throws RuntimeException{
-        taskRepo.findById(id).orElseThrow(() -> new RuntimeException(String.format("Task not found with %d",id)));
+    public void deleteTask(Long id) throws RuntimeException {
+        taskRepo.findById(id).orElseThrow(() -> new RuntimeException(String.format("Task not found with %d", id)));
         taskRepo.deleteById(id);
     }
 

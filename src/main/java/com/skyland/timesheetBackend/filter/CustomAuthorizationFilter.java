@@ -9,9 +9,9 @@ import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.skyland.timesheetBackend.manager.ResponseManager;
 import com.skyland.timesheetBackend.manager.responseModel.BaseResponse;
 import com.skyland.timesheetBackend.manager.responseModel.ErrorMessage;
-import com.skyland.timesheetBackend.manager.ResponseManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -37,11 +37,11 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if(request.getServletContext().equals("api/token/refresh")) {
+        if (request.getServletContext().equals("api/token/refresh")) {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
-            if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
+            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
 
                 try {
                     String token = authorizationHeader.substring("Bearer ".length());
@@ -57,21 +57,21 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                    filterChain.doFilter(request,response);
+                    filterChain.doFilter(request, response);
 
                 } catch (Exception error) {
                     log.error(error.getClass().toString());
                     BaseResponse loginFailResponse = null;
                     ErrorMessage errorInfo;
-                    
-                    if(error instanceof TokenExpiredException) {
+
+                    if (error instanceof TokenExpiredException) {
                         loginFailResponse = ResponseManager.getInstance().get_auth_error_response(expired_token);
 
-                    } else if(error instanceof JWTDecodeException) {
+                    } else if (error instanceof JWTDecodeException) {
 
                         loginFailResponse = ResponseManager.getInstance().get_auth_error_response(invalid_token);
 
-                    } else if(error instanceof SignatureVerificationException) {
+                    } else if (error instanceof SignatureVerificationException) {
                         loginFailResponse = ResponseManager.getInstance().get_auth_error_response(signature_verification);
 
                     }

@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api") @RequiredArgsConstructor
+@RequestMapping("/api")
+@RequiredArgsConstructor
 public class TaskResource {
 
     private final TaskService taskService;
@@ -43,7 +44,7 @@ public class TaskResource {
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             response = ResponseManager.getInstance().get_error_response_with_custom_message(e.getMessage());
-            return  ResponseEntity.ok(response);
+            return ResponseEntity.ok(response);
         }
 
     }

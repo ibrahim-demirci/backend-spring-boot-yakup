@@ -1,8 +1,8 @@
 package com.skyland.timesheetBackend.api;
 
-import com.skyland.timesheetBackend.manager.responseModel.BaseResponse;
 import com.skyland.timesheetBackend.dto.UserDto;
 import com.skyland.timesheetBackend.manager.ResponseManager;
+import com.skyland.timesheetBackend.manager.responseModel.BaseResponse;
 import com.skyland.timesheetBackend.service.admin.BaseAdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/admin") @RequiredArgsConstructor
+@RequestMapping("/api/admin")
+@RequiredArgsConstructor
 public class AdminResource {
 
     private final BaseAdminService adminService;

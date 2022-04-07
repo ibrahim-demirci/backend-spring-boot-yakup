@@ -27,7 +27,9 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@RestController @RequestMapping("/api") @RequiredArgsConstructor
+@RestController
+@RequestMapping("/api")
+@RequiredArgsConstructor
 public class UserResource {
 
     private final BaseUserService userService;
@@ -42,7 +44,7 @@ public class UserResource {
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
 
-        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
 
             try {
                 String refresh_token = authorizationHeader.substring("Bearer ".length());
@@ -55,21 +57,21 @@ public class UserResource {
                         .withSubject(user.getEmail())
                         .withExpiresAt(new java.sql.Date(System.currentTimeMillis() + 10 * 60 * 1000))
                         .withIssuer(request.getRequestURL().toString())
-                        .withClaim("roles",user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
+                        .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
                         .sign(algorithm);
 
                 Map<String, String> tokens = new HashMap<>();
-                tokens.put("access_token",access_token);
-                tokens.put("refresh_token",refresh_token);
+                tokens.put("access_token", access_token);
+                tokens.put("refresh_token", refresh_token);
                 response.setContentType(APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);
 
             } catch (Exception e) {
-                response.setHeader("error",e.getMessage());
+                response.setHeader("error", e.getMessage());
                 response.setStatus(FORBIDDEN.value());
 //                    response.sendError(FORBIDDEN.value());
                 Map<String, String> error = new HashMap<>();
-                error.put("error_message",e.getMessage());
+                error.put("error_message", e.getMessage());
                 response.setContentType(APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), error);
             }
@@ -88,7 +90,7 @@ public class UserResource {
             return ResponseEntity.ok(user);
         } catch (Exception e) {
             response = ResponseManager.getInstance().get_error_response_with_custom_message(e.getMessage());
-            return  ResponseEntity.ok(response);
+            return ResponseEntity.ok(response);
         }
     }
 
@@ -101,10 +103,9 @@ public class UserResource {
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             response = ResponseManager.getInstance().get_error_response_with_custom_message(e.getMessage());
-            return  ResponseEntity.ok(response);
+            return ResponseEntity.ok(response);
         }
     }
-
 
 
 }

@@ -21,7 +21,10 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
-@Service @RequiredArgsConstructor @Transactional @Slf4j
+@Service
+@RequiredArgsConstructor
+@Transactional
+@Slf4j
 public class UserService implements BaseUserService, UserDetailsService {
 
     private final UserRepo userRepo;
@@ -29,7 +32,7 @@ public class UserService implements BaseUserService, UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(String  email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepo.findByEmail(email).orElseThrow(() -> new BadCredentialsException(K.ErrorMessageInfo.USER_NOT_FOUND_INFO + email));
 
         if (user.isVerified() == false) {
@@ -40,11 +43,11 @@ public class UserService implements BaseUserService, UserDetailsService {
         user.getRoles().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         });
-        return new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
     }
 
     @Override
-    public User saveUser(User user) throws RuntimeException{
+    public User saveUser(User user) throws RuntimeException {
         log.info(user.toString());
         Optional<User> emailControlUser = userRepo.findByEmail(user.getEmail());
         Optional<User> phoneControlUser = userRepo.findByPhone(user.getPhone());
@@ -56,7 +59,7 @@ public class UserService implements BaseUserService, UserDetailsService {
             user.setUserCode(UUID.randomUUID().toString());
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             User userSaved = userRepo.save(user);
-            roleService.addRoleToUser(userSaved.getEmail(),"ROLE_USER");
+            roleService.addRoleToUser(userSaved.getEmail(), "ROLE_USER");
             return userSaved;
         }
     }
@@ -64,13 +67,13 @@ public class UserService implements BaseUserService, UserDetailsService {
     @Override
     public UserDto getUserDtoByEmail(String email) {
         User user = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException(K.ErrorMessageInfo.USER_NOT_FOUND_INFO));
-        return convertEntityToDto(user) ;
+        return convertEntityToDto(user);
     }
 
     @Override
     public UserDto getUserDtoByCode(String userCode) {
         User user = userRepo.findByUserCode(userCode).orElseThrow(() -> new RuntimeException(K.ErrorMessageInfo.USER_NOT_FOUND_INFO));
-        return convertEntityToDto(user) ;
+        return convertEntityToDto(user);
     }
 
     @Override
@@ -82,7 +85,7 @@ public class UserService implements BaseUserService, UserDetailsService {
     @Override
     public User getUserByEmail(String email) {
         User user = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException(K.ErrorMessageInfo.USER_NOT_FOUND_INFO));
-        return user ;
+        return user;
     }
 
 //    @Override
@@ -90,7 +93,6 @@ public class UserService implements BaseUserService, UserDetailsService {
 //        return userRepo.findById(id).orElseThrow(() -> new RuntimeException(USER_NOT_FOUND)) ;
 //
 //    }
-
 
 
     private UserDto convertEntityToDto(User user) {

@@ -19,42 +19,42 @@ import java.sql.Timestamp;
 @SpringBootApplication
 public class TimesheetBackendApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TimesheetBackendApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(TimesheetBackendApplication.class, args);
+    }
 
-	@Bean
-	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	@Bean
-	CommandLineRunner run(UserService userService, RoleService roleService, TaskService taskService, AdminService adminService) {
-		return args -> {
-			roleService.saveRole(new Role(null,"ROLE_USER"));
-			roleService.saveRole(new Role(null,"ROLE_ADMIN"));
+    @Bean
+    CommandLineRunner run(UserService userService, RoleService roleService, TaskService taskService, AdminService adminService) {
+        return args -> {
+            roleService.saveRole(new Role(null, "ROLE_USER"));
+            roleService.saveRole(new Role(null, "ROLE_ADMIN"));
 
-			userService.saveUser(new User("John","Travolta","IOS Dev", "555 555 55 51","description","john@gmail.com", "1234"));
-			userService.saveUser(new User("Will","Smith", ".NET Dev","555 555 55 52","description","will@gmail.com", "1234"));
-			userService.saveUser(new User("Jim","Carry", "Android Dev","555 555 55 53","description","jim@gmail.com", "1234"));
-			userService.saveUser(new User("Arnold","Sch", "UI Designer","555 555 55 54","description","arnold@gmail.com", "1234"));
-
-
-			roleService.addRoleToUser("jim@gmail.com", "ROLE_ADMIN");
-			roleService.addRoleToUser("arnold@gmail.com", "ROLE_ADMIN");
-
-			taskService.saveTask(new Task(null,"title","describtion",null, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis())));
-			taskService.saveTask(new Task(null,"title2","describtion2",null, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis())));
+            userService.saveUser(new User("John", "Travolta", "IOS Dev", "555 555 55 51", "description", "john@gmail.com", "1234"));
+            userService.saveUser(new User("Will", "Smith", ".NET Dev", "555 555 55 52", "description", "will@gmail.com", "1234"));
+            userService.saveUser(new User("Jim", "Carry", "Android Dev", "555 555 55 53", "description", "jim@gmail.com", "1234"));
+            userService.saveUser(new User("Arnold", "Sch", "UI Designer", "555 555 55 54", "description", "arnold@gmail.com", "1234"));
 
 
-			taskService.addUserToTask("jim@gmail.com",Long.valueOf(7));
-			taskService.addUserToTask("jim@gmail.com",Long.valueOf(8));
+            roleService.addRoleToUser("jim@gmail.com", "ROLE_ADMIN");
+            roleService.addRoleToUser("arnold@gmail.com", "ROLE_ADMIN");
 
-			taskService.getTasksByUserId(Long.valueOf(5));
+            taskService.saveTask(new Task(null, "title", "describtion", null, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis())));
+            taskService.saveTask(new Task(null, "title2", "describtion2", null, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis())));
 
-			adminService.verifyUser("arnold@gmail.com");
-			adminService.verifyUser("jim@gmail.com");
 
-		};
-	}
+            taskService.addUserToTask("jim@gmail.com", Long.valueOf(7));
+            taskService.addUserToTask("jim@gmail.com", Long.valueOf(8));
+
+            taskService.getTasksByUserId(Long.valueOf(5));
+
+            adminService.verifyUser("arnold@gmail.com");
+            adminService.verifyUser("jim@gmail.com");
+
+        };
+    }
 }

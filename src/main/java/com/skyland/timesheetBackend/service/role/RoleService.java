@@ -30,7 +30,7 @@ public class RoleService implements BaseRoleService {
 
     @Override
     public void addRoleToUser(String email, String roleName) {
-        log.info("Adding role {} to user {} ", roleName,email);
+        log.info("Adding role {} to user {} ", roleName, email);
         User user = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException(K.ErrorMessageInfo.USER_NOT_FOUND_INFO));
         Role role = roleRepo.findByName(roleName);
         user.getRoles().add(role);

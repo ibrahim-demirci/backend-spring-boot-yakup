@@ -14,7 +14,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/api") @RequiredArgsConstructor
+@RequestMapping("/api")
+@RequiredArgsConstructor
 public class RoleResource {
 
     private BaseRoleService roleService;

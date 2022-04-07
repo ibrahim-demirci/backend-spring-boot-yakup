@@ -1,6 +1,5 @@
 package com.skyland.timesheetBackend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,9 +8,13 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@Entity @Data @NoArgsConstructor @AllArgsConstructor
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(nullable = false, updatable = false)
     private String userCode;
@@ -26,7 +29,7 @@ public class User {
     private Collection<Role> roles = new ArrayList<>();
     private boolean isVerified = false;
 
-    public User( String name, String surname, String jobTitle, String phone, String description, String email, String password) {
+    public User(String name, String surname, String jobTitle, String phone, String description, String email, String password) {
         this.name = name;
         this.surname = surname;
         this.jobTitle = jobTitle;

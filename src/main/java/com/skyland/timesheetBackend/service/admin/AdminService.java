@@ -11,7 +11,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-@Service @RequiredArgsConstructor @Transactional
+@Service
+@RequiredArgsConstructor
+@Transactional
 public class AdminService implements BaseAdminService {
 
     private final UserRepo userRepo;
@@ -23,6 +25,7 @@ public class AdminService implements BaseAdminService {
                 .map(this::convertEntityToDto)
                 .collect(Collectors.toList());
     }
+
     @Override
     public UserDto verifyUser(String email) throws Exception {
         User user = userRepo.findByEmail(email).orElseThrow(() -> new RuntimeException("User not fount with " + email));
