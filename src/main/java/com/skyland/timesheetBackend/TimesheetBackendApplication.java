@@ -34,13 +34,13 @@ public class TimesheetBackendApplication {
             roleService.saveRole(new Role(null, "ROLE_USER"));
             roleService.saveRole(new Role(null, "ROLE_ADMIN"));
 
-            userService.saveUser(new User("John", "Travolta", "IOS Dev", "555 555 55 51", "description", "john@gmail.com", "1234"));
-            userService.saveUser(new User("Will", "Smith", ".NET Dev", "555 555 55 52", "description", "will@gmail.com", "1234"));
-            userService.saveUser(new User("Jim", "Carry", "Android Dev", "555 555 55 53", "description", "jim@gmail.com", "1234"));
-            userService.saveUser(new User("Arnold", "Sch", "UI Designer", "555 555 55 54", "description", "arnold@gmail.com", "1234"));
+            userService.saveUser(new User("John", "Travolta", "IOS Dev", "555 555 55 51", "description", "john@gmail.com", "123456"));
+            userService.saveUser(new User("Will", "Smith", ".NET Dev", "555 555 55 52", "description", "will@gmail.com", "123456"));
+            userService.saveUser(new User("Jim", "Carry", "Android Dev", "555 555 55 53", "description", "jim@gmail.com", "123456"));
+            userService.saveUser(new User("Arnold", "Sch", "UI Designer", "555 555 55 54", "description", "arnold@gmail.com", "123456"));
 
 
-            roleService.addRoleToUser("jim@gmail.com", "ROLE_ADMIN");
+//            roleService.addRoleToUser("jim@gmail.com", "ROLE_ADMIN");
             roleService.addRoleToUser("arnold@gmail.com", "ROLE_ADMIN");
 
             taskService.saveTask(new Task(null, "title", "describtion", null, new Timestamp(System.currentTimeMillis()), new Timestamp(System.currentTimeMillis())));
